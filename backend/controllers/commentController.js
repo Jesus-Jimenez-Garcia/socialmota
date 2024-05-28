@@ -1,11 +1,12 @@
-import db from '../db.js';
+import db from '../config/db.js';
 
 // Crear un nuevo comentario
 export const createComment = async (req, res) => {
-    const { post_id, user_id, comment } = req.body;
+    const userId = req.user.userId;
+    const { post_id, comment } = req.body;
     try {
         const query = 'INSERT INTO Comments (post_id, user_id, comment) VALUES (?, ?, ?)';
-        await db.execute(query, [post_id, user_id, comment]);
+        await db.execute(query, [post_id, userId, comment]);
         res.status(201).json({ mensaje: 'Comentario creado exitosamente' });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -15,7 +16,15 @@ export const createComment = async (req, res) => {
 // Borrar un comentario
 export const deleteComment = async (req, res) => {
     const commentId = req.params.id;
+    const userId = req.user.userId;
+
     try {
+        // Verificar que el comentario pertenece al usuario autenticado
+        const [comment] = await db.execute('SELECT * FROM Comments WHERE id = ? AND user_id = ?', [commentId, userId]);
+        if (comment.length === 0) {
+            return res.status(403).json({ mensaje: 'Acceso denegado' });
+        }
+
         const query = 'DELETE FROM Comments WHERE id = ?';
         const [results] = await db.execute(query, [commentId]);
         if (results.affectedRows === 0) {

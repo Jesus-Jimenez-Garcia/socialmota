@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { registerUser, loginUser, logoutUser } from '../controllers/authController.js';
+import { authenticateToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -10,6 +11,6 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 
 // Ruta para cerrar sesión
-router.post('/logout', logoutUser);
+router.post('/logout', authenticateToken, logoutUser);
 
 export default router;

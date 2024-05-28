@@ -1,4 +1,4 @@
-import db from '../db.js';
+import db from '../config/db.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
 export const logoutUser = (req, res) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if (token == null) return res.sendStatus(401);
+    if (token == null) return res.status(401).json({ mensaje: 'Token faltante' });
 
     blacklistedTokens.push(token);
     res.status(200).json({ mensaje: 'Cierre de sesión exitoso' });

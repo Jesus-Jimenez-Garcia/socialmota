@@ -7,15 +7,20 @@ let blacklistedTokens = []; // Lista negra de tokens
 export const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if (token == null) return res.sendStatus(401);
+    if (token == null) return res.status(401).json({ mensaje: 'Acceso denegado, token faltante' });
 
     if (blacklistedTokens.includes(token)) {
-        return res.sendStatus(403);
+        return res.status(403).json({ mensaje: 'Acceso denegado, token en lista negra' });
     }
 
     jwt.verify(token, secretKey, (err, user) => {
-        if (err) return res.sendStatus(403);
+        if (err) return res.status(403).json({ mensaje: 'Token no válido' });
         req.user = user;
         next();
     });
+};
+
+// Añadir token a la lista negra
+export const blacklistToken = (token) => {
+    blacklistedTokens.push(token);
 };
