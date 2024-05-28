@@ -1,8 +1,11 @@
 import { Router } from 'express';
-import { getUserProfile, updateUser, deleteUser } from '../controllers/userController.js';
+import { getUserProfile, updateUser, deleteUser, getAllUsers } from '../controllers/userController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
+
+// Ruta para obtener todos los usuarios con paginación
+router.get('/', authenticateToken, getAllUsers);
 
 // Ruta para obtener el perfil del usuario autenticado
 router.get('/profile', authenticateToken, getUserProfile);

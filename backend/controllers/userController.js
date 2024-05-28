@@ -1,19 +1,34 @@
 import db from '../config/db.js';
 import bcrypt from 'bcrypt';
 
+// Obtener todos los usuarios con paginación
+export const getAllUsers = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+
+  try {
+      const query = `SELECT id, username, profile_picture, name, description FROM Users LIMIT ${limit} OFFSET ${offset}`;
+      const [results] = await db.execute(query);
+      res.status(200).json(results);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
+
 // Obtener el perfil del usuario autenticado
 export const getUserProfile = async (req, res) => {
-    const userId = req.user.userId;
-    try {
-        const query = 'SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?';
-        const [results] = await db.execute(query, [userId]);
-        if (results.length === 0) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-        }
-        res.status(200).json(results[0]);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  const userId = req.user.userId;
+  try {
+      const query = 'SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?';
+      const [results] = await db.execute(query, [userId]);
+      if (results.length === 0) {
+          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+      res.status(200).json(results[0]);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 };
 
 // Actualizar un usuario
