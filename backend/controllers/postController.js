@@ -1,5 +1,5 @@
 import db from "../config/db.js";
-import moment from 'moment';
+
 
 // Crear una nueva publicación
 export const createPost = async (req, res) => {
@@ -15,6 +15,8 @@ export const createPost = async (req, res) => {
   }
 };
 
+
+
 // Obtener todos los posts con paginación
 export const getAllPosts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -23,7 +25,8 @@ export const getAllPosts = async (req, res) => {
 
   try {
     const query = `
-      SELECT Posts.*, Users.name, Users.profile_picture
+      SELECT Posts.*, Users.name, Users.profile_picture, 
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
       LIMIT ${limit} OFFSET ${offset}`;
@@ -33,6 +36,9 @@ export const getAllPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Resto del controlador...
+
 
 
 // Obtener las publicaciones de los usuarios seguidos con paginación
