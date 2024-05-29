@@ -31,6 +31,31 @@ export const getAllPosts = async (req, res) => {
       (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id AND Likes.user_id = ?) AS likedByUser
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
+      ORDER BY Posts.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}`;
+    const [results] = await db.execute(query, [userId]);
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+// Obtener los posts más populares con paginación
+export const getPopularPosts = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+  const userId = req.user ? req.user.userId : null; // Verifica si el usuario está autenticado
+
+  try {
+    const query = `
+      SELECT Posts.*, Users.name, Users.profile_picture, 
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes,
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id AND Likes.user_id = ?) AS likedByUser
+      FROM Posts 
+      JOIN Users ON Posts.user_id = Users.id 
+      ORDER BY likes DESC, Posts.created_at DESC
       LIMIT ${limit} OFFSET ${offset}`;
     const [results] = await db.execute(query, [userId]);
     res.status(200).json(results);
@@ -55,6 +80,7 @@ export const getFollowedPosts = async (req, res) => {
       JOIN Followers ON Posts.user_id = Followers.followed_id
       JOIN Users ON Posts.user_id = Users.id
       WHERE Followers.follower_id = ?
+      ORDER BY Posts.created_at DESC
       LIMIT ${limit} OFFSET ${offset}`;
     const [results] = await db.execute(query, [userId]);
     res.status(200).json(results);
