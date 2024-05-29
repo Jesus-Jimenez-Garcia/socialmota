@@ -1,4 +1,5 @@
 import db from "../config/db.js";
+import moment from 'moment';
 
 // Crear una nueva publicación
 export const createPost = async (req, res) => {
@@ -21,13 +22,18 @@ export const getAllPosts = async (req, res) => {
   const offset = (page - 1) * limit;
 
   try {
-    const query = `SELECT * FROM Posts LIMIT ${limit} OFFSET ${offset}`;
+    const query = `
+      SELECT Posts.*, Users.name, Users.profile_picture
+      FROM Posts 
+      JOIN Users ON Posts.user_id = Users.id 
+      LIMIT ${limit} OFFSET ${offset}`;
     const [results] = await db.execute(query);
     res.status(200).json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Obtener las publicaciones de los usuarios seguidos con paginación
 export const getFollowedPosts = async (req, res) => {
@@ -38,11 +44,12 @@ export const getFollowedPosts = async (req, res) => {
 
   try {
     const query = `
-          SELECT Posts.* FROM Posts
-          JOIN Followers ON Posts.user_id = Followers.followed_id
-          WHERE Followers.follower_id = ?
-          LIMIT ${limit} OFFSET ${offset}
-      `;
+      SELECT Posts.*, Users.name, Users.profile_picture
+      FROM Posts
+      JOIN Followers ON Posts.user_id = Followers.followed_id
+      JOIN Users ON Posts.user_id = Users.id
+      WHERE Followers.follower_id = ?
+      LIMIT ${limit} OFFSET ${offset}`;
     const [results] = await db.execute(query, [userId]);
     res.status(200).json(results);
   } catch (err) {
@@ -58,7 +65,12 @@ export const getUserPosts = async (req, res) => {
   const offset = (page - 1) * limit;
 
   try {
-    const query = `SELECT * FROM Posts WHERE user_id = ? LIMIT ${limit} OFFSET ${offset}`;
+    const query = `
+      SELECT Posts.*, Users.name, Users.profile_picture
+      FROM Posts 
+      JOIN Users ON Posts.user_id = Users.id 
+      WHERE Posts.user_id = ? 
+      LIMIT ${limit} OFFSET ${offset}`;
     const [results] = await db.execute(query, [userId]);
     res.status(200).json(results);
   } catch (err) {

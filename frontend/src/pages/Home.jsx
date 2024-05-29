@@ -1,7 +1,5 @@
-// src/pages/Home.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header.jsx';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -16,7 +14,7 @@ const Home = () => {
 
     return (
         <div className="home-container">
-            <Header />
+            <h1>SocialMota</h1>
             <div className="buttons">
                 <button onClick={handleLogin}>Iniciar sesión</button>
                 <button onClick={handleRegister}>Crear usuario</button>

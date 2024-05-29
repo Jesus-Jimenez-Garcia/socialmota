@@ -1,0 +1,36 @@
+.navbar {
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Asegura que el contenido se distribuya correctamente */
+  position: fixed; /* Fija la barra de navegación en la parte superior */
+  top: 0; /* Alinea la barra de navegación en la parte superior */
+  left: 0; /* Alinea la barra de navegación a la izquierda */
+  z-index: 1000; /* Asegura que la barra de navegación esté encima de otros elementos */
+}
+
+.navbar-brand {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+}
+
+.nav-link {
+  margin-left: 20px; /* Espacio entre los enlaces */
+  font-size: 1em;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  text-decoration: underline; /* Subraya los enlaces al pasar el mouse */
+}
