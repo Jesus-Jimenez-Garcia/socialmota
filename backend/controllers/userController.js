@@ -39,21 +39,20 @@ export const getUserProfile = async (req, res) => {
 
 // Actualizar un usuario
 export const updateUser = async (req, res) => {
-    const userId = req.params.id;
-    const { username, password, profile_picture, name, description } = req.body;
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const query = 'UPDATE Users SET username = ?, password = ?, profile_picture = ?, name = ?, description = ? WHERE id = ?';
-        const [results] = await db.execute(query, [username, hashedPassword, profile_picture, name, description, userId]);
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-        }
-        res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  const userId = req.user.userId; // Obtener el userId del token de autenticación
+  const { username, password, profile_picture, name, description } = req.body;
+  try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const query = 'UPDATE Users SET username = ?, password = ?, profile_picture = ?, name = ?, description = ? WHERE id = ?';
+      const [results] = await db.execute(query, [username, hashedPassword, profile_picture, name, description, userId]);
+      if (results.affectedRows === 0) {
+          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+      res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 };
-
 // Borrar un usuario
 export const deleteUser = async (req, res) => {
     const userId = req.params.id;
