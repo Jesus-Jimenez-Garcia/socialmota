@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './UserCard.css'; // Importa los estilos del componente
 
 const UserCard = ({ user }) => {
     return (

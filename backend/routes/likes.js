@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { likePost, unlikePost } from '../controllers/likeController.js';
+import { likePost, unlikePost, checkLikeStatus } from '../controllers/likeController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
@@ -8,6 +8,9 @@ const router = Router();
 router.post('/', authenticateToken, likePost);
 
 // Ruta para quitar "me gusta" a una publicación
-router.delete('/:id', authenticateToken, unlikePost);
+router.delete('/', authenticateToken, unlikePost);
+
+// Ruta para verificar el estado del "me gusta" de una publicación
+router.post('/status', authenticateToken, checkLikeStatus);
 
 export default router;
