@@ -9,6 +9,7 @@ const Register = ({ isEditMode = false }) => {
     const [description, setDescription] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -74,6 +75,37 @@ const Register = ({ isEditMode = false }) => {
         }
     };
 
+    const handleDeleteAccount = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                localStorage.removeItem('token');
+                navigate('/');
+            } else {
+                const errorData = await response.json();
+                setError(errorData.mensaje || 'Error al borrar la cuenta');
+            }
+        } catch (error) {
+            setError('Error: ' + error.message);
+        }
+    };
+
+    const handleDeleteConfirm = () => {
+        setShowDeleteConfirm(true);
+    };
+
+    const handleCancelDelete = () => {
+        setShowDeleteConfirm(false);
+    };
+
     return (
         <div>
             <h2>{isEditMode ? 'Editar Perfil' : 'Registrar Usuario'}</h2>
@@ -100,7 +132,19 @@ const Register = ({ isEditMode = false }) => {
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit" disabled={loading}>{loading ? 'Cargando...' : isEditMode ? 'Actualizar' : 'Registrar'}</button>
+                {isEditMode && (
+                    <button type="button" onClick={handleDeleteConfirm} style={{ marginLeft: '10px' }}>
+                        Borrar cuenta
+                    </button>
+                )}
             </form>
+            {showDeleteConfirm && (
+                <div style={{ marginTop: '10px', border: '1px solid red', padding: '10px', borderRadius: '5px' }}>
+                    <p>¿Estás seguro que quieres borrar tu cuenta?</p>
+                    <button onClick={handleDeleteAccount} style={{ marginRight: '10px' }}>Sí</button>
+                    <button onClick={handleCancelDelete}>No</button>
+                </div>
+            )}
         </div>
     );
 };

@@ -55,15 +55,15 @@ export const updateUser = async (req, res) => {
 };
 // Borrar un usuario
 export const deleteUser = async (req, res) => {
-    const userId = req.params.id;
-    try {
-        const query = 'DELETE FROM Users WHERE id = ?';
-        const [results] = await db.execute(query, [userId]);
-        if (results.affectedRows === 0) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-        }
-        res.status(200).json({ mensaje: 'Usuario borrado exitosamente' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  const userId = req.user.userId;
+  try {
+      const query = 'DELETE FROM Users WHERE id = ?';
+      const [results] = await db.execute(query, [userId]);
+      if (results.affectedRows === 0) {
+          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+      res.status(200).json({ mensaje: 'Usuario borrado exitosamente' });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 };
