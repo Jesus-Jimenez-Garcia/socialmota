@@ -26,6 +26,14 @@ h2 {
   color: #333;
 }
 
+/* Estilos del botón "Borrar cuenta" */
+.delete-button {
+  background-color: red;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}
 
 /* Estilos de paginación */
 .pagination-buttons {
