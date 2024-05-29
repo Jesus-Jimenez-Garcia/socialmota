@@ -18,9 +18,9 @@ const Posts = () => {
             const token = localStorage.getItem('token');
             let endpoint = '';
             if (showFollowed) {
-                endpoint = 'followed';
-            } else if (sortByPopularity) {
-                endpoint = 'popular';
+                endpoint = sortByPopularity ? 'followed/likes' : 'followed';
+            } else {
+                endpoint = sortByPopularity ? 'popular' : '';
             }
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/posts/${endpoint}?page=${page}`, {
                 method: 'GET',
@@ -90,8 +90,7 @@ const Posts = () => {
     };
 
     const handleSortByPopularity = () => {
-        setSortByPopularity(true);
-        setShowFollowed(false);
+        setSortByPopularity(prev => !prev);
         setPage(1); // Reiniciar a la primera página
     };
 
@@ -114,10 +113,10 @@ const Posts = () => {
             <h1>{userName}, te estábamos esperando</h1>
             {/* Botón para redirigir a la página de usuarios */}
             <button onClick={() => navigate('/users')}>Conocer gente</button>
-            {/* Botón para ordenar por popularidad */}
-            <button onClick={handleSortByPopularity}>Más populares</button>
             {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
             <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
+            {/* Botón para ordenar por popularidad */}
+            <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Ordenar por fecha' : 'Más populares'}</button>
             {posts.map(post => (
                 <Post key={post.id} post={post} />
             ))}
