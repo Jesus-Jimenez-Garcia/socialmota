@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createPost, getAllPosts, getFollowedPosts, getUserPosts, updatePost, deletePost, getPopularPosts } from '../controllers/postController.js';
+import { createPost, getAllPosts, getFollowedPosts, getUserPosts, updatePost, deletePost, getPopularPosts, getFollowedPostsByLikes } from '../controllers/postController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
@@ -12,6 +12,9 @@ router.get('/', authenticateToken, getAllPosts);
 
 // Ruta para obtener las publicaciones de los usuarios seguidos
 router.get('/followed', authenticateToken, getFollowedPosts);
+
+// Ruta para obtener las publicaciones de los usuarios seguidos ordenadas por likes
+router.get('/followed/likes', authenticateToken, getFollowedPostsByLikes);
 
 // Ruta para obtener las publicaciones más populares
 router.get('/popular', authenticateToken, getPopularPosts);

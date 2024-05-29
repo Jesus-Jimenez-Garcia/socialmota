@@ -3,6 +3,7 @@ import UserCard from '../components/UserCard';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
+    const [following, setFollowing] = useState([]); // Estado para los usuarios seguidos
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1); // Estado para la página actual
@@ -50,8 +51,77 @@ const Users = () => {
         }
     };
 
+    const fetchFollowing = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers/followed`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setFollowing(data.map(f => f.id)); // Almacenar solo los IDs de los usuarios seguidos
+            } else {
+                const errorData = await response.json();
+                setError(errorData.mensaje || 'Error al obtener los seguidores');
+            }
+        } catch (error) {
+            setError('Error: ' + error.message);
+        }
+    };
+
+    const handleFollow = async (userId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ followed_id: userId })
+            });
+            if (response.ok) {
+                setFollowing(prev => [...prev, userId]); // Añadir el ID del usuario seguido
+                alert('Usuario seguido exitosamente');
+            } else {
+                const errorData = await response.json();
+                setError(errorData.mensaje || 'Error al seguir al usuario');
+            }
+        } catch (error) {
+            setError('Error: ' + error.message);
+        }
+    };
+
+    const handleUnfollow = async (userId) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ followed_id: userId })
+            });
+            if (response.ok) {
+                setFollowing(prev => prev.filter(id => id !== userId)); // Remover el ID del usuario dejado de seguir
+                alert('Usuario dejado de seguir exitosamente');
+            } else {
+                const errorData = await response.json();
+                setError(errorData.mensaje || 'Error al dejar de seguir al usuario');
+            }
+        } catch (error) {
+            setError('Error: ' + error.message);
+        }
+    };
+
     useEffect(() => {
         fetchUsers(page);
+        fetchFollowing();
     }, [page]); // Agregar page como dependencia
 
     const handleNextPage = () => {
@@ -78,7 +148,13 @@ const Users = () => {
             <h2>Usuarios</h2>
             <div className="user-container">
                 {users.map(user => (
-                    <UserCard key={user.id} user={user} />
+                    <UserCard 
+                        key={user.id} 
+                        user={user} 
+                        isFollowing={following.includes(user.id)}
+                        onFollow={handleFollow} 
+                        onUnfollow={handleUnfollow} 
+                    />
                 ))}
             </div>
             <div className="pagination-buttons">

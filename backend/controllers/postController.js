@@ -65,7 +65,6 @@ export const getPopularPosts = async (req, res) => {
 };
 
 
-
 // Obtener las publicaciones de los usuarios seguidos con paginación
 export const getFollowedPosts = async (req, res) => {
   const userId = req.user.userId;
@@ -89,6 +88,31 @@ export const getFollowedPosts = async (req, res) => {
   }
 };
 
+// Obtener las publicaciones de los usuarios seguidos ordenadas por mayor cantidad de likes con paginación
+export const getFollowedPostsByLikes = async (req, res) => {
+  const userId = req.user.userId;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+
+  try {
+    const query = `
+      SELECT Posts.*, Users.name, Users.profile_picture, 
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes
+      FROM Posts
+      JOIN Followers ON Posts.user_id = Followers.followed_id
+      JOIN Users ON Posts.user_id = Users.id
+      WHERE Followers.follower_id = ?
+      ORDER BY likes DESC, Posts.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}`;
+    const [results] = await db.execute(query, [userId]);
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 // Obtener las publicaciones del usuario autenticado con paginación
 export const getUserPosts = async (req, res) => {
   const userId = req.user.userId;
@@ -102,6 +126,7 @@ export const getUserPosts = async (req, res) => {
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
       WHERE Posts.user_id = ? 
+      ORDER BY Posts.created_at DESC
       LIMIT ${limit} OFFSET ${offset}`;
     const [results] = await db.execute(query, [userId]);
     res.status(200).json(results);

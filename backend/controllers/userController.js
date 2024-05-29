@@ -2,19 +2,25 @@ import db from '../config/db.js';
 import bcrypt from 'bcrypt';
 
 // Obtener todos los usuarios con paginación
+
 export const getAllUsers = async (req, res) => {
+  const userId = req.user.userId; // ID del usuario autenticado
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const offset = (page - 1) * limit;
 
   try {
-      const query = `SELECT id, username, profile_picture, name, description FROM Users LIMIT ${limit} OFFSET ${offset}`;
-      const [results] = await db.execute(query);
+      const query = `SELECT id, username, profile_picture, name, description 
+                     FROM Users 
+                     WHERE id != ? 
+                     LIMIT ${limit} OFFSET ${offset}`;
+      const [results] = await db.execute(query, [userId]);
       res.status(200).json(results);
   } catch (err) {
       res.status(500).json({ error: err.message });
   }
 };
+
 
 // Obtener el perfil del usuario autenticado
 export const getUserProfile = async (req, res) => {
