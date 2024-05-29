@@ -42,3 +42,6 @@
   margin-right: 10px;
 }
 
+.inactive-link {
+  pointer-events: none;
+}

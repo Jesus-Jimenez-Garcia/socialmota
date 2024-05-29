@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import './Nav.css';
 
 const Nav = () => {
     const [user, setUser] = useState(null);
+    const [isAtTop, setIsAtTop] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         // Función para obtener la información del perfil del usuario
@@ -33,14 +35,40 @@ const Nav = () => {
         fetchUserProfile();
     }, []);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsAtTop(window.scrollY === 0);
+        };
+
+        if (location.pathname === '/posts') {
+            window.addEventListener('scroll', handleScroll);
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [location.pathname]);
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/');
     };
 
+    const handleSocialMotaClick = (e) => {
+        if (location.pathname === '/posts' && isAtTop) {
+            e.preventDefault();
+        } else {
+            navigate('/posts');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
     return (
         <nav className="navbar">
-            <Link to="/posts" className="navbar-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <Link 
+                to="/posts" 
+                className={`navbar-brand ${location.pathname === '/posts' && isAtTop ? 'inactive-link' : ''}`}
+                onClick={handleSocialMotaClick}
+            >
                 SocialMota
             </Link>
             <div className="navbar-links">
