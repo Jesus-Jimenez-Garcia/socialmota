@@ -10,12 +10,18 @@ const Posts = () => {
     const [page, setPage] = useState(1); // Estado para la página actual
     const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
     const [sortByPopularity, setSortByPopularity] = useState(false); // Estado para manejar la ordenación por popularidad
+    const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
     const navigate = useNavigate();
 
-    const fetchPosts = async (page, sortByPopularity = false) => {
+    const fetchPosts = async (page, sortByPopularity = false, showFollowed = false) => {
         try {
             const token = localStorage.getItem('token');
-            const endpoint = sortByPopularity ? 'popular' : '';
+            let endpoint = '';
+            if (showFollowed) {
+                endpoint = 'followed';
+            } else if (sortByPopularity) {
+                endpoint = 'popular';
+            }
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/posts/${endpoint}?page=${page}`, {
                 method: 'GET',
                 headers: {
@@ -65,9 +71,9 @@ const Posts = () => {
     };
 
     useEffect(() => {
-        fetchPosts(page, sortByPopularity);
+        fetchPosts(page, sortByPopularity, showFollowed);
         fetchUserProfile();
-    }, [page, sortByPopularity]); // Agregar page y sortByPopularity como dependencias
+    }, [page, sortByPopularity, showFollowed]); // Agregar page, sortByPopularity y showFollowed como dependencias
 
     const handleNextPage = () => {
         if (!isLastPage) {
@@ -85,6 +91,13 @@ const Posts = () => {
 
     const handleSortByPopularity = () => {
         setSortByPopularity(true);
+        setShowFollowed(false);
+        setPage(1); // Reiniciar a la primera página
+    };
+
+    const handleToggleFollowed = () => {
+        setShowFollowed(prevState => !prevState);
+        setSortByPopularity(false);
         setPage(1); // Reiniciar a la primera página
     };
 
@@ -103,6 +116,8 @@ const Posts = () => {
             <button onClick={() => navigate('/users')}>Conocer gente</button>
             {/* Botón para ordenar por popularidad */}
             <button onClick={handleSortByPopularity}>Más populares</button>
+            {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
+            <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
             {posts.map(post => (
                 <Post key={post.id} post={post} />
             ))}
