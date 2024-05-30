@@ -12,6 +12,7 @@ const Posts = ({ filterByUser = false }) => {
     const [sortByPopularity, setSortByPopularity] = useState(false); // Estado para manejar la ordenación por popularidad
     const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
     const [showTopButton, setShowTopButton] = useState(false); // Estado para manejar la visibilidad del botón "Volver al inicio"
+    const [following, setFollowing] = useState([]); // Estado para manejar los seguidos del usuario
     const navigate = useNavigate();
 
     const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
@@ -39,7 +40,11 @@ const Posts = ({ filterByUser = false }) => {
                 } else {
                     setIsLastPage(false); // Si hay 10 posts, aún puede haber más páginas
                 }
-                setPosts(data);
+                const formattedData = data.map(post => ({
+                    ...post,
+                    likes: post.likes || 0
+                }));
+                setPosts(formattedData);
             } else {
                 const errorData = await response.json();
                 setError(errorData.mensaje || 'Error al obtener los posts');
@@ -73,9 +78,32 @@ const Posts = ({ filterByUser = false }) => {
         }
     };
 
+    const fetchFollowing = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers/followed`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setFollowing(data);
+            } else {
+                const errorData = await response.json();
+                setError(errorData.mensaje || 'Error al obtener los seguidos');
+            }
+        } catch (error) {
+            setError('Error: ' + error.message);
+        }
+    };
+
     useEffect(() => {
         fetchPosts(page, sortByPopularity, showFollowed, filterByUser);
         fetchUserProfile();
+        fetchFollowing();
     }, [page, sortByPopularity, showFollowed, filterByUser]); // Agregar page, sortByPopularity, showFollowed y filterByUser como dependencias
 
     useEffect(() => {
@@ -131,18 +159,21 @@ const Posts = ({ filterByUser = false }) => {
 
     return (
         <div>
-              {!filterByUser && <h1>{userName}, te estábamos esperando</h1>}
+            {!filterByUser && <h1>{userName}, te estábamos esperando</h1>}
             {/* Botón para redirigir a la página de usuarios */}
             <button onClick={() => navigate('/users')}>Conocer gente</button>
             {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
             {!filterByUser && (
                 <>
                     <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
-                    <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Ordenar por fecha' : 'Más populares'}</button>
+                    <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Más actuales' : 'Más populares'}</button>
                 </>
             )}
             {/* Botón para publicar */}
             <button onClick={handleNavigateToCreatePost}>Publicar</button>
+            {showFollowed && following.length === 0 && (
+                <h2>Aún no sigues a nadie. Comienza a conocer gente de tu pueblo.</h2>
+            )}
             {posts.length === 0 && filterByUser && (
                 <h2>Aún no has publicado en SocialMota. Tus vecinos te esperan</h2>
             )}

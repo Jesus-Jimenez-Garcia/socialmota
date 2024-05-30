@@ -49,6 +49,6 @@ h2 {
 }
 
 .pagination-buttons button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+
+  visibility: hidden;
 }
