@@ -2,28 +2,41 @@
 .user-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start; /* Cambiado a space-around para espaciar las tarjetas */
 }
 
 .user-card {
+  height: 300px;
+  width: 200px; /* Ancho fijo para cada tarjeta */
   border: 1px solid #000;
   padding: 10px;
-  margin: 10px 5px;
+  margin: 10px;
   border-radius: 10px;
   background-color: #fff;
-  flex: 1 1 calc(20% - 10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   box-sizing: border-box;
 }
 
 .user-card img {
-  max-width: 100%;
+  width: 100%; /* Ajusta la imagen al ancho de la tarjeta */
   height: auto;
+  max-height: 100px; /* Limita la altura de la imagen */
   border-radius: 5px;
   margin-bottom: 10px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.user-name {
+  font-weight: bold;
 }
 
 .user p {
   margin: 5px 0;
+  text-align: center;
 }
 
 .user button {

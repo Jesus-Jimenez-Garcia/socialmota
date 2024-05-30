@@ -131,7 +131,7 @@ const Posts = ({ filterByUser = false }) => {
 
     return (
         <div>
-            <h1>{userName}, te estábamos esperando</h1>
+              {!filterByUser && <h1>{userName}, te estábamos esperando</h1>}
             {/* Botón para redirigir a la página de usuarios */}
             <button onClick={() => navigate('/users')}>Conocer gente</button>
             {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
@@ -143,6 +143,9 @@ const Posts = ({ filterByUser = false }) => {
             )}
             {/* Botón para publicar */}
             <button onClick={handleNavigateToCreatePost}>Publicar</button>
+            {posts.length === 0 && filterByUser && (
+                <h2>Aún no has publicado en SocialMota. Tus vecinos te esperan</h2>
+            )}
             {posts.map(post => (
                 <Post key={post.id} post={post} isUserPost={filterByUser} />
             ))}
