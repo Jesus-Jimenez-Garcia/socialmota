@@ -122,7 +122,8 @@ export const getUserPosts = async (req, res) => {
 
   try {
     const query = `
-      SELECT Posts.*, Users.name, Users.profile_picture
+      SELECT Posts.*, Users.name, Users.profile_picture,
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
       WHERE Posts.user_id = ? 
@@ -134,6 +135,7 @@ export const getUserPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Actualizar una publicación
 export const updatePost = async (req, res) => {

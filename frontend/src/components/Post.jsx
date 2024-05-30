@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import moment from "moment"; // Usaremos moment.js para el formato de fechas
 import "./Post.css"; // Importa los estilos del componente
 
-const Post = ({ post }) => {
-  const { id, name, content, image_url, created_at, profile_picture, likes } =
-    post;
+const Post = ({ post, isUserPost }) => {
+  const { id, name, content, image_url, created_at, profile_picture, likes } = post;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
 
@@ -69,6 +68,34 @@ const Post = ({ post }) => {
     }
   };
 
+  const handleDeleteClick = async () => {
+    const confirmation = window.confirm('¿Seguro que quieres borrar el post?');
+    if (!confirmation) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/posts/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        alert('Post borrado exitosamente');
+        window.location.reload(); // Recargar la página para reflejar los cambios
+      } else {
+        const errorData = await response.json();
+        alert(errorData.mensaje || 'Error al borrar el post');
+      }
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  };
+
   return (
     <div className="post">
       <div className={`post-content ${image_url ? '' : 'full'}`}>
@@ -85,6 +112,11 @@ const Post = ({ post }) => {
             </span>
             <span>{likeCount}</span>
           </div>
+          {isUserPost && (
+            <button type="button" className="delete-button" onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>
+              Borrar
+            </button>
+          )}
         </div>
       </div>
       {image_url && <img src={image_url} alt="Contenido del post" />}
@@ -102,6 +134,7 @@ Post.propTypes = {
     profile_picture: PropTypes.string,
     likes: PropTypes.number.isRequired,
   }).isRequired,
+  isUserPost: PropTypes.bool // Añadir esta nueva prop
 };
 
 export default Post;

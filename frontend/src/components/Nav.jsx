@@ -63,35 +63,38 @@ const Nav = () => {
     };
 
     return (
-        <nav className="navbar">
-            <Link 
-                to="/posts" 
-                className={`navbar-brand ${location.pathname === '/posts' && isAtTop ? 'inactive-link' : ''}`}
-                onClick={handleSocialMotaClick}
-            >
-                SocialMota
-            </Link>
-            <div className="navbar-links">
-                {user && (
-                    <>
-                        {user.profile_picture && (
-                            <img
-                                src={user.profile_picture}
-                                alt={`Foto de ${user.name}`}
-                                className="nav-profile-picture"
-                            />
-                        )}
-                        <Link to="/profile" className="nav-link">
-                            Mi perfil
-                        </Link>
-                    </>
-                )}
-                <button onClick={handleLogout} className="nav-link">
-                    Cerrar sesión
-                </button>
-            </div>
-        </nav>
-    );
+      <>
+          <nav className="navbar">
+              <Link 
+                  to="/posts" 
+                  className={`navbar-brand ${location.pathname === '/posts' && isAtTop ? 'inactive-link' : ''}`}
+                  onClick={handleSocialMotaClick}
+              >
+                  SocialMota
+              </Link>
+              <div className="navbar-links">
+                  {user && (
+                      <>
+                          {user.profile_picture && (
+                              <img
+                                  src={user.profile_picture}
+                                  alt={`Foto de ${user.name}`}
+                                  className="nav-profile-picture"
+                              />
+                          )}
+                          <Link to="/profile" className="nav-link">
+                              Mi perfil
+                          </Link>
+                      </>
+                  )}
+                  <button onClick={handleLogout} className="nav-link">
+                      Cerrar sesión
+                  </button>
+              </div>
+          </nav>
+          <div className="navbar-margin"></div> {/* Espacio extra para que el contenido no quede detrás del navbar */}
+      </>
+  );
 };
 
 export default Nav;

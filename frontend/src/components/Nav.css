@@ -12,6 +12,10 @@
   z-index: 1000; /* Asegura que la barra de navegación esté encima de otros elementos */
 }
 
+.navbar-margin {
+  margin-top: 100px; /* Ajusta este valor según la altura de tu navbar */
+}
+
 .navbar-brand {
   font-size: 1.5em;
   font-weight: bold;

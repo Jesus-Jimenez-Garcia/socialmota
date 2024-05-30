@@ -11,6 +11,7 @@ const Posts = ({ filterByUser = false }) => {
     const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
     const [sortByPopularity, setSortByPopularity] = useState(false); // Estado para manejar la ordenación por popularidad
     const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
+    const [showTopButton, setShowTopButton] = useState(false); // Estado para manejar la visibilidad del botón "Volver al inicio"
     const navigate = useNavigate();
 
     const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
@@ -77,6 +78,20 @@ const Posts = ({ filterByUser = false }) => {
         fetchUserProfile();
     }, [page, sortByPopularity, showFollowed, filterByUser]); // Agregar page, sortByPopularity, showFollowed y filterByUser como dependencias
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY === 0 && page === 1) {
+                setShowTopButton(false);
+            } else {
+                setShowTopButton(true);
+            }
+        };
+
+        handleScroll(); // Ejecuta la función inicialmente para establecer el estado correcto
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [page]);
+
     const handleNextPage = () => {
         if (!isLastPage) {
             setPage(prevPage => prevPage + 1);
@@ -129,10 +144,10 @@ const Posts = ({ filterByUser = false }) => {
             {/* Botón para publicar */}
             <button onClick={handleNavigateToCreatePost}>Publicar</button>
             {posts.map(post => (
-                <Post key={post.id} post={post} />
+                <Post key={post.id} post={post} isUserPost={filterByUser} />
             ))}
             <div className="pagination-buttons">
-                <button onClick={handleFirstPage}>Volver al inicio</button>
+                {showTopButton && <button onClick={handleFirstPage}>Volver al inicio</button>}
                 <button onClick={handleNextPage} disabled={isLastPage}>Ver más posts</button>
             </div>
         </div>
