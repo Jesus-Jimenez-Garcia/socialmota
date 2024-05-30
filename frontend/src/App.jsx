@@ -7,6 +7,7 @@ import Posts from './pages/Posts';
 import Users from './pages/Users';
 import Nav from './components/Nav';
 import CreatePost from './pages/CreatePost';
+import Profile from './pages/ProfileVew'; // Importar la nueva página Profile
 
 const AppWrapper = () => {
     const location = useLocation();
@@ -21,7 +22,8 @@ const AppWrapper = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/users" element={<Users />} />
-                <Route path="/profile" element={<Register isEditMode={true} />} />
+                <Route path="/profile" element={<Profile />} /> {/* Nueva ruta para Profile */}
+                <Route path="/edit-profile" element={<Register isEditMode={true} />} /> {/* Cambiar ruta de edición */}
                 <Route path="/my-posts" element={<Posts filterByUser={true} />} />
                 <Route path="/create-post" element={<CreatePost />} />
             </Routes>

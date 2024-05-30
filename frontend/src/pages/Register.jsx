@@ -102,22 +102,22 @@ const Register = ({ isEditMode = false }) => {
         }
     };
 
-    const handleViewMyPosts = () => {
-        navigate('/my-posts'); // Navega a la página de los posts del usuario
-    };
-
     return (
         <div>
             <h2>{isEditMode ? 'Editar Perfil' : 'Registrar Usuario'}</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Nombre de Usuario</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                </div>
-                <div>
-                    <label>Contraseña</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                </div>
+                {!isEditMode && (
+                    <>
+                        <div>
+                            <label>Nombre de Usuario</label>
+                            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                        </div>
+                        <div>
+                            <label>Contraseña</label>
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        </div>
+                    </>
+                )}
                 <div>
                     <label>Foto de Perfil (URL)</label>
                     <input type="text" value={profilePicture} onChange={(e) => setProfilePicture(e.target.value)} />
@@ -133,14 +133,9 @@ const Register = ({ isEditMode = false }) => {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit" disabled={loading}>{loading ? 'Cargando...' : isEditMode ? 'Actualizar' : 'Registrar'}</button>
                 {isEditMode && (
-                    <>
-                        <button type="button" onClick={handleDeleteAccount} className="delete-button" style={{ marginLeft: '10px' }}>
-                            Borrar cuenta
-                        </button>
-                        <button type="button" onClick={handleViewMyPosts} style={{ marginLeft: '10px' }}>
-                            Ver mis posts
-                        </button>
-                    </>
+                    <button type="button" onClick={handleDeleteAccount} className="delete-button" style={{ marginLeft: '10px' }}>
+                        Borrar cuenta
+                    </button>
                 )}
             </form>
         </div>
