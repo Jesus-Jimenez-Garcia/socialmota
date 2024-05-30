@@ -47,7 +47,7 @@ const Login = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Nombre de Usuario:</label>
+                    <label>Usuario:</label>
                     <input type="text" name="username" value={form.username} onChange={handleChange} required />
                 </div>
                 <div>

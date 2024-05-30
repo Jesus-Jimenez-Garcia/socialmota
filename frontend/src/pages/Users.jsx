@@ -12,7 +12,7 @@ const Users = () => {
     const fetchUsers = async (page) => {
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users?page=${page}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users?page=${page}&limit=16`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -21,25 +21,12 @@ const Users = () => {
             });
             if (response.ok) {
                 const data = await response.json();
-                setUsers(data);
-                if (data.length < 10) {
-                    setIsLastPage(true); // Si hay menos de 10 usuarios, es la última página
+                if (data.length < 16) {
+                    setIsLastPage(true); // Si hay menos de 16 usuarios, es la última página
                 } else {
-                    // Verificar si hay más usuarios en la siguiente página
-                    const nextPageResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users?page=${page + 1}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                    if (nextPageResponse.ok) {
-                        const nextPageData = await nextPageResponse.json();
-                        setIsLastPage(nextPageData.length === 0); // Si la siguiente página está vacía, es la última página
-                    } else {
-                        setIsLastPage(true);
-                    }
+                    setIsLastPage(false);
                 }
+                setUsers(data);
             } else {
                 const errorData = await response.json();
                 setError(errorData.mensaje || 'Error al obtener los usuarios');
@@ -159,7 +146,7 @@ const Users = () => {
             </div>
             <div className="pagination-buttons">
                 <button onClick={handleFirstPage}>Volver al inicio</button>
-                <button onClick={handleNextPage} disabled={isLastPage}>Ver más usuarios</button>
+                {!isLastPage && <button onClick={handleNextPage}>Ver más usuarios</button>}
             </div>
         </div>
     );

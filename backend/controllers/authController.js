@@ -7,16 +7,23 @@ let blacklistedTokens = []; // Lista negra de tokens
 
 // Registrar un nuevo usuario
 export const registerUser = async (req, res) => {
-    const { username, password, profile_picture, name, description } = req.body;
-    try {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const query = 'INSERT INTO Users (username, password, profile_picture, name, description) VALUES (?, ?, ?, ?, ?)';
-        await db.execute(query, [username, hashedPassword, profile_picture, name, description]);
-        res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  const { username, password, profile_picture, name, description } = req.body;
+
+  // Verificar que la longitud de la contraseña sea de al menos 6 caracteres
+  if (password.length < 6) {
+      return res.status(400).json({ mensaje: 'La contraseña debe tener al menos 6 caracteres' });
+  }
+
+  try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const query = 'INSERT INTO Users (username, password, profile_picture, name, description) VALUES (?, ?, ?, ?, ?)';
+      await db.execute(query, [username, hashedPassword, profile_picture, name, description]);
+      res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 };
+
 
 // Iniciar sesión
 export const loginUser = async (req, res) => {
