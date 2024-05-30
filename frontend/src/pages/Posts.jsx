@@ -100,6 +100,10 @@ const Posts = () => {
         setPage(1); // Reiniciar a la primera página
     };
 
+    const handleNavigateToCreatePost = () => {
+        navigate('/create-post');
+    };
+
     if (loading) {
         return <p>Cargando posts...</p>;
     }
@@ -117,6 +121,8 @@ const Posts = () => {
             <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
             {/* Botón para ordenar por popularidad */}
             <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Ordenar por fecha' : 'Más populares'}</button>
+            {/* Botón para publicar */}
+            <button onClick={handleNavigateToCreatePost}>Publicar</button>
             {posts.map(post => (
                 <Post key={post.id} post={post} />
             ))}

@@ -8,7 +8,7 @@
   background-color: #fff;
   display: flex; /* Utilizar Flexbox */
   justify-content: space-between; /* Espaciar los elementos horizontalmente */
-  height: 150px; /* Altura fija para todos los posts */
+  height: 175px; /* Altura fija para todos los posts */
   box-sizing: border-box; /* Incluir padding y border en el tamaño total */
 }
 

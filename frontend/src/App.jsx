@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Posts from './pages/Posts';
 import Users from './pages/Users';
 import Nav from './components/Nav';
+import CreatePost from './pages/CreatePost';
 
 const AppWrapper = () => {
     const location = useLocation();
@@ -21,6 +22,7 @@ const AppWrapper = () => {
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/profile" element={<Register isEditMode={true} />} />
+                <Route path="/create-post" element={<CreatePost />} />
             </Routes>
         </>
     );
