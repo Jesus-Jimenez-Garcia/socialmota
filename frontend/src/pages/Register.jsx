@@ -102,6 +102,10 @@ const Register = ({ isEditMode = false }) => {
         }
     };
 
+    const handleViewMyPosts = () => {
+        navigate('/my-posts'); // Navega a la página de los posts del usuario
+    };
+
     return (
         <div>
             <h2>{isEditMode ? 'Editar Perfil' : 'Registrar Usuario'}</h2>
@@ -129,9 +133,14 @@ const Register = ({ isEditMode = false }) => {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit" disabled={loading}>{loading ? 'Cargando...' : isEditMode ? 'Actualizar' : 'Registrar'}</button>
                 {isEditMode && (
-                    <button type="button" onClick={handleDeleteAccount} className="delete-button" style={{ marginLeft: '10px' }}>
-                        Borrar cuenta
-                    </button>
+                    <>
+                        <button type="button" onClick={handleDeleteAccount} className="delete-button" style={{ marginLeft: '10px' }}>
+                            Borrar cuenta
+                        </button>
+                        <button type="button" onClick={handleViewMyPosts} style={{ marginLeft: '10px' }}>
+                            Ver mis posts
+                        </button>
+                    </>
                 )}
             </form>
         </div>

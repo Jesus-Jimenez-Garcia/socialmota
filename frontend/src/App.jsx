@@ -22,6 +22,7 @@ const AppWrapper = () => {
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/users" element={<Users />} />
                 <Route path="/profile" element={<Register isEditMode={true} />} />
+                <Route path="/my-posts" element={<Posts filterByUser={true} />} />
                 <Route path="/create-post" element={<CreatePost />} />
             </Routes>
         </>

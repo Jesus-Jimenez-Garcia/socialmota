@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Post from '../components/Post.jsx';
 
-const Posts = () => {
+const Posts = ({ filterByUser = false }) => {
     const [posts, setPosts] = useState([]);
     const [userName, setUserName] = useState('');
     const [error, setError] = useState('');
@@ -13,11 +13,13 @@ const Posts = () => {
     const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
     const navigate = useNavigate();
 
-    const fetchPosts = async (page, sortByPopularity = false, showFollowed = false) => {
+    const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
         try {
             const token = localStorage.getItem('token');
             let endpoint = '';
-            if (showFollowed) {
+            if (filterByUser) {
+                endpoint = 'user'; // Endpoint para obtener los posts del usuario autenticado
+            } else if (showFollowed) {
                 endpoint = sortByPopularity ? 'followed/likes' : 'followed';
             } else {
                 endpoint = sortByPopularity ? 'popular' : '';
@@ -71,9 +73,9 @@ const Posts = () => {
     };
 
     useEffect(() => {
-        fetchPosts(page, sortByPopularity, showFollowed);
+        fetchPosts(page, sortByPopularity, showFollowed, filterByUser);
         fetchUserProfile();
-    }, [page, sortByPopularity, showFollowed]); // Agregar page, sortByPopularity y showFollowed como dependencias
+    }, [page, sortByPopularity, showFollowed, filterByUser]); // Agregar page, sortByPopularity, showFollowed y filterByUser como dependencias
 
     const handleNextPage = () => {
         if (!isLastPage) {
@@ -118,9 +120,12 @@ const Posts = () => {
             {/* Botón para redirigir a la página de usuarios */}
             <button onClick={() => navigate('/users')}>Conocer gente</button>
             {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
-            <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
-            {/* Botón para ordenar por popularidad */}
-            <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Ordenar por fecha' : 'Más populares'}</button>
+            {!filterByUser && (
+                <>
+                    <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
+                    <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Ordenar por fecha' : 'Más populares'}</button>
+                </>
+            )}
             {/* Botón para publicar */}
             <button onClick={handleNavigateToCreatePost}>Publicar</button>
             {posts.map(post => (
