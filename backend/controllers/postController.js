@@ -28,6 +28,7 @@ export const getAllPosts = async (req, res) => {
     const query = `
       SELECT Posts.*, Users.name, Users.profile_picture, 
       (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes,
+      (SELECT COUNT(*) FROM Comments WHERE Comments.post_id = Posts.id) AS comments,
       (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id AND Likes.user_id = ?) AS likedByUser
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
@@ -41,6 +42,7 @@ export const getAllPosts = async (req, res) => {
 };
 
 
+
 // Obtener los posts más populares con paginación
 export const getPopularPosts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -52,6 +54,7 @@ export const getPopularPosts = async (req, res) => {
     const query = `
       SELECT Posts.*, Users.name, Users.profile_picture, 
       (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes,
+      (SELECT COUNT(*) FROM Comments WHERE Comments.post_id = Posts.id) AS comments,
       (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id AND Likes.user_id = ?) AS likedByUser
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
@@ -65,6 +68,7 @@ export const getPopularPosts = async (req, res) => {
 };
 
 
+
 // Obtener las publicaciones de los usuarios seguidos con paginación
 export const getFollowedPosts = async (req, res) => {
   const userId = req.user.userId;
@@ -74,7 +78,9 @@ export const getFollowedPosts = async (req, res) => {
 
   try {
     const query = `
-      SELECT Posts.*, Users.name, Users.profile_picture
+      SELECT Posts.*, Users.name, Users.profile_picture,
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes,
+      (SELECT COUNT(*) FROM Comments WHERE Comments.post_id = Posts.id) AS comments
       FROM Posts
       JOIN Followers ON Posts.user_id = Followers.followed_id
       JOIN Users ON Posts.user_id = Users.id
@@ -98,7 +104,8 @@ export const getFollowedPostsByLikes = async (req, res) => {
   try {
     const query = `
       SELECT Posts.*, Users.name, Users.profile_picture, 
-      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes,
+      (SELECT COUNT(*) FROM Comments WHERE Comments.post_id = Posts.id) AS comments
       FROM Posts
       JOIN Followers ON Posts.user_id = Followers.followed_id
       JOIN Users ON Posts.user_id = Users.id
@@ -112,7 +119,6 @@ export const getFollowedPostsByLikes = async (req, res) => {
   }
 };
 
-
 // Obtener las publicaciones del usuario autenticado con paginación
 export const getUserPosts = async (req, res) => {
   const userId = req.user.userId;
@@ -123,7 +129,8 @@ export const getUserPosts = async (req, res) => {
   try {
     const query = `
       SELECT Posts.*, Users.name, Users.profile_picture,
-      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes
+      (SELECT COUNT(*) FROM Likes WHERE Likes.post_id = Posts.id) AS likes,
+      (SELECT COUNT(*) FROM Comments WHERE Comments.post_id = Posts.id) AS comments
       FROM Posts 
       JOIN Users ON Posts.user_id = Users.id 
       WHERE Posts.user_id = ? 
@@ -135,6 +142,7 @@ export const getUserPosts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 // Actualizar una publicación

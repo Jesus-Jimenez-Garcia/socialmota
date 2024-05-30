@@ -4,7 +4,7 @@ import moment from "moment"; // Usaremos moment.js para el formato de fechas
 import "./Post.css"; // Importa los estilos del componente
 
 const Post = ({ post, isUserPost }) => {
-  const { id, name, content, image_url, created_at, profile_picture, likes } = post;
+  const { id, name, content, image_url, created_at, profile_picture, likes, comments } = post;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
 
@@ -106,11 +106,17 @@ const Post = ({ post, isUserPost }) => {
         <p>{content}</p>
         <div className="post-footer">
           <p className="post-date"><small>Publicado {timeAgo}</small></p>
-          <div className="post-likes" onClick={handleLikeClick}>
-            <span role="img" aria-label="like" className={`heart-icon ${liked ? 'liked' : ''}`}>
-              {liked ? '❤️' : '🤍'}
-            </span>
-            <span>{likeCount}</span>
+          <div className="post-likes-comments">
+            <div className="post-likes" onClick={handleLikeClick}>
+              <span role="img" aria-label="like" className={`heart-icon ${liked ? 'liked' : ''}`}>
+                {liked ? '❤️' : '🤍'}
+              </span>
+              <span>{likeCount}</span>
+            </div>
+            <div className="post-comments">
+              <span role="img" aria-label="comments" className="comment-icon">💬</span>
+              <span>{comments}</span>
+            </div>
           </div>
           {isUserPost && (
             <button type="button" className="delete-button" onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>
@@ -133,8 +139,9 @@ Post.propTypes = {
     created_at: PropTypes.string.isRequired,
     profile_picture: PropTypes.string,
     likes: PropTypes.number.isRequired,
+    comments: PropTypes.number.isRequired,
   }).isRequired,
-  isUserPost: PropTypes.bool // Añadir esta nueva prop
+  isUserPost: PropTypes.bool
 };
 
 export default Post;

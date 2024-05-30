@@ -2,7 +2,7 @@
 .user-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start; /* Cambiado a space-around para espaciar las tarjetas */
+  justify-content: center /* Cambiado a space-around para espaciar las tarjetas */
 }
 
 .user-card {
