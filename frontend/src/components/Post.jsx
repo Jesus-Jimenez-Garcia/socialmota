@@ -7,6 +7,9 @@ const Post = ({ post, isUserPost }) => {
   const { id, name, content, image_url, created_at, profile_picture, likes, comments } = post;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
+  const [commentList, setCommentList] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [showComments, setShowComments] = useState(false);
 
   // Calcular el tiempo transcurrido desde la fecha de publicación
   const timeAgo = moment(created_at).fromNow();
@@ -96,38 +99,113 @@ const Post = ({ post, isUserPost }) => {
     }
   };
 
+  const fetchComments = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/comments/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCommentList(data);
+      } else {
+        const errorData = await response.json();
+        alert(errorData.mensaje || 'Error al obtener los comentarios');
+      }
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  };
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ post_id: id, comment: newComment })
+      });
+
+      if (response.ok) {
+        setNewComment('');
+        fetchComments();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.mensaje || 'Error al añadir el comentario');
+      }
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  };
+
   return (
     <div className="post">
-      <div className={`post-content ${image_url ? '' : 'full'}`}>
-        <div className="post-header">
-          {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
-          <p className="post-name"><strong>{name}</strong></p>
-        </div>
-        <p>{content}</p>
-        <div className="post-footer">
-          <p className="post-date"><small>Publicado {timeAgo}</small></p>
-          <div className="post-likes-comments">
-            <div className="post-likes" onClick={handleLikeClick}>
-              <span role="img" aria-label="like" className={`heart-icon ${liked ? 'liked' : ''}`}>
-                {liked ? '❤️' : '🤍'}
-              </span>
-              <span>{likeCount}</span>
-            </div>
-            <div className="post-comments">
-              <span role="img" aria-label="comments" className="comment-icon">💬</span>
-              <span>{comments}</span>
-            </div>
+      <div className="post-content">
+        <div className={`post-text ${image_url ? '' : 'full'}`}>
+          <div className="post-header">
+            {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
+            <p className="post-name"><strong>{name}</strong></p>
           </div>
-          {isUserPost && (
-            <button type="button" className="delete-button" onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>
-              Borrar
-            </button>
-          )}
+          <p>{content}</p>
+          <div className="post-footer">
+            <p className="post-date"><small>Publicado {timeAgo}</small></p>
+            <div className="post-likes-comments">
+              <div className="post-likes" onClick={handleLikeClick}>
+                <span role="img" aria-label="like" className={`heart-icon ${liked ? 'liked' : ''}`}>
+                  {liked ? '❤️' : '🤍'}
+                </span>
+                <span>{likeCount}</span>
+              </div>
+              <div className="post-comments" onClick={() => { setShowComments(!showComments); if (!showComments) fetchComments(); }}>
+                <span role="img" aria-label="comments" className="comment-icon">💬</span>
+                <span>{comments}</span>
+              </div>
+            </div>
+            {isUserPost && (
+              <button type="button" className="delete-button" onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>
+                Borrar
+              </button>
+            )}
+          </div>
         </div>
+        {image_url && (
+          <div className="post-image">
+            <img src={image_url} alt="Contenido del post" />
+          </div>
+        )}
       </div>
-      {image_url && <img src={image_url} alt="Contenido del post" />}
+      {showComments && (
+        <div className="comments-section">
+          {commentList.map(comment => (
+            <div key={comment.id} className="comment">
+              <strong>{comment.username}</strong>
+              <p>{comment.comment}</p>
+            </div>
+          ))}
+          <form className="comment-form" onSubmit={handleCommentSubmit}>
+            <input
+              type="text"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Añadir un comentario..."
+              required
+            />
+            <button type="submit">Comentar</button>
+          </form>
+        </div>
+      )}
     </div>
   );
+  
 };
 
 Post.propTypes = {

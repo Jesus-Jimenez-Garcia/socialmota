@@ -6,29 +6,33 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   display: flex; /* Utilizar Flexbox */
-  justify-content: space-between; /* Espaciar los elementos horizontalmente */
-  height: 175px; /* Altura fija para todos los posts */
+  flex-direction: column; /* Cambiado a columna para incluir la sección de comentarios */
+  height: auto; /* Altura automática para ajustarse al contenido */
   box-sizing: border-box; /* Incluir padding y border en el tamaño total */
 }
 
 .post-content {
-  flex: 1;
+  display: flex;
+  width: 100%; /* Ajustar al 100% del contenedor */
+}
+
+.post-image {
+  width: 25%; /* Ocupa el 25% del contenedor */
+  margin-right: 10px; /* Espacio entre la imagen y el contenido */
+}
+
+.post-image img {
+  width: 100%;
+  height: auto; /* Ajustar la altura al contenido */
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.post-text {
+  flex: 1; /* Ocupa el resto del espacio disponible */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 70%; /* Ocupa el 70% si hay imagen */
-}
-
-.post-content.full {
-  width: 100%; /* Ocupa el 100% si no hay imagen */
-}
-
-.post img {
-  width: 30%;
-  height: 100%; /* Ajustar la altura al 100% del contenedor */
-  margin-left: 10px; /* Espacio entre el contenido y la imagen */
-  border-radius: 5px;
-  object-fit: cover;
 }
 
 .post p {
@@ -70,4 +74,41 @@
 .heart-icon, .comment-icon {
   cursor: pointer;
   margin-right: 5px;
+}
+
+.comments-section {
+  margin-top: 10px;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.comment {
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment-form {
+  display: flex;
+  margin-top: 10px;
+}
+
+.comment-form input {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.comment-form button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #0056b3;
 }

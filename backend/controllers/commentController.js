@@ -1,5 +1,18 @@
 import db from '../config/db.js';
 
+// Obtener comentarios de un post
+export const getComments = async (req, res) => {
+  const postId = req.params.id;
+  try {
+      const query = 'SELECT Comments.*, Users.username FROM Comments JOIN Users ON Comments.user_id = Users.id WHERE post_id = ?';
+      const [results] = await db.execute(query, [postId]);
+      res.status(200).json(results);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
+
+
 // Crear un nuevo comentario
 export const createComment = async (req, res) => {
     const userId = req.user.userId;
