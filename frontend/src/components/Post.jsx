@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import moment from "moment"; // Usaremos moment.js para el formato de fechas
 import "./Post.css"; // Importa los estilos del componente
 
-const Post = ({ post, isUserPost }) => {
+const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) => {
   const { id, name, content, image_url, created_at, profile_picture, likes, comments } = post;
   const [likeCount, setLikeCount] = useState(likes);
   const [liked, setLiked] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [showComments, setShowComments] = useState(false);
+  const showComments = openCommentsPostId === id;
 
   // Calcular el tiempo transcurrido desde la fecha de publicación
   const timeAgo = moment(created_at).fromNow();
@@ -147,6 +147,15 @@ const Post = ({ post, isUserPost }) => {
     }
   };
 
+  const handleCommentsClick = () => {
+    if (showComments) {
+      setOpenCommentsPostId(null);
+    } else {
+      setOpenCommentsPostId(id);
+      fetchComments();
+    }
+  };
+
   return (
     <div className="post">
       <div className="post-content">
@@ -165,7 +174,7 @@ const Post = ({ post, isUserPost }) => {
                 </span>
                 <span>{likeCount}</span>
               </div>
-              <div className="post-comments" onClick={() => { setShowComments(!showComments); if (!showComments) fetchComments(); }}>
+              <div className="post-comments" onClick={handleCommentsClick}>
                 <span role="img" aria-label="comments" className="comment-icon">💬</span>
                 <span>{comments}</span>
               </div>
@@ -205,7 +214,6 @@ const Post = ({ post, isUserPost }) => {
       )}
     </div>
   );
-  
 };
 
 Post.propTypes = {
@@ -219,7 +227,9 @@ Post.propTypes = {
     likes: PropTypes.number.isRequired,
     comments: PropTypes.number.isRequired,
   }).isRequired,
-  isUserPost: PropTypes.bool
+  isUserPost: PropTypes.bool,
+  openCommentsPostId: PropTypes.number,
+  setOpenCommentsPostId: PropTypes.func.isRequired,
 };
 
 export default Post;
