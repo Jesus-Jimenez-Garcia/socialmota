@@ -41,18 +41,38 @@ export const getUserProfile = async (req, res) => {
 export const updateUser = async (req, res) => {
   const userId = req.user.userId; // Obtener el userId del token de autenticación
   const { username, password, profile_picture, name, description } = req.body;
+
   try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const query = 'UPDATE Users SET username = ?, password = ?, profile_picture = ?, name = ?, description = ? WHERE id = ?';
-      const [results] = await db.execute(query, [username, hashedPassword, profile_picture, name, description, userId]);
-      if (results.affectedRows === 0) {
-          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-      }
-      res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
+    // Obtener los valores actuales del usuario
+    const [currentUser] = await db.execute('SELECT * FROM Users WHERE id = ?', [userId]);
+    
+    if (currentUser.length === 0) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    const existingUser = currentUser[0];
+
+    // Usar los valores existentes si no se proporcionan nuevos valores
+    const newUsername = username || existingUser.username;
+    const newProfilePicture = profile_picture || existingUser.profile_picture;
+    const newName = name || existingUser.name;
+    const newDescription = description || existingUser.description;
+    const newPassword = password ? await bcrypt.hash(password, 10) : existingUser.password;
+
+    const query = 'UPDATE Users SET username = ?, password = ?, profile_picture = ?, name = ?, description = ? WHERE id = ?';
+    const [results] = await db.execute(query, [newUsername, newPassword, newProfilePicture, newName, newDescription, userId]);
+
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+    
+    res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' });
   } catch (err) {
-      res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 };
+
+
 // Borrar un usuario
 export const deleteUser = async (req, res) => {
   const userId = req.user.userId;

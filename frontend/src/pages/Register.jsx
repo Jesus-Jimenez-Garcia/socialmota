@@ -47,7 +47,7 @@ const Register = ({ isEditMode = false, isLoginMode = false }) => {
         e.preventDefault();
         setLoading(true);
 
-        if (password.length < 6) {
+        if (!isEditMode && password.length < 6) {
             setError('La contraseña debe tener al menos 6 caracteres');
             setLoading(false);
             return;
@@ -62,13 +62,17 @@ const Register = ({ isEditMode = false, isLoginMode = false }) => {
                 : `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`;
             const method = isEditMode ? 'PUT' : 'POST';
 
+            const body = isEditMode
+                ? { profile_picture: profilePicture, name, description }
+                : { username, password, profile_picture: profilePicture, name, description };
+
             const response = await fetch(url, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': isEditMode ? `Bearer ${token}` : ''
                 },
-                body: JSON.stringify({ username, password, profile_picture: profilePicture, name, description })
+                body: JSON.stringify(body)
             });
 
             if (response.ok) {
@@ -119,7 +123,7 @@ const Register = ({ isEditMode = false, isLoginMode = false }) => {
     };
 
     const handleBack = () => {
-        navigate('/');
+        navigate('/profile');
     };
 
     return (

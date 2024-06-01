@@ -46,7 +46,7 @@ const ProfileView = () => {
             <h2>Mi perfil</h2>
             <div>
                 <img src={user.profile_picture} alt={`Foto de ${user.name}`} style={{ width: '150px', borderRadius: '50%' }} />
-                <h3>{user.name}</h3>
+                <h3 style={{ fontWeight: 'bold' }}>{user.name}</h3>
                 <p>{user.description}</p>
             </div>
             <div>
