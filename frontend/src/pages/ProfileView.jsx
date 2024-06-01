@@ -7,7 +7,6 @@ const ProfileView = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Función para obtener la información del perfil del usuario
         const fetchUserProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -52,7 +51,7 @@ const ProfileView = () => {
             <div>
                 <button onClick={() => navigate('/my-posts')}>Ver mis posts</button>
                 <button onClick={() => navigate('/edit-profile')}>Editar perfil</button>
-                <button onClick={() => alert('Funcionalidad próximamente')}>Cambiar Contraseña</button>
+                <button onClick={() => navigate('/change-password')}>Cambiar Contraseña</button>
             </div>
         </div>
     );

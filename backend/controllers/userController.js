@@ -37,6 +37,38 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+
+// Cambiar la contraseña del usuario
+export const changePassword = async (req, res) => {
+    const userId = req.user.userId;
+    const { oldPassword, newPassword } = req.body;
+
+    if (newPassword.length < 6) {
+        return res.status(400).json({ mensaje: 'La nueva contraseña debe tener al menos 6 caracteres' });
+    }
+
+    try {
+        const [user] = await db.execute('SELECT * FROM Users WHERE id = ?', [userId]);
+        if (user.length === 0) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user[0].password);
+        if (!isMatch) {
+            return res.status(400).json({ mensaje: 'Contraseña antigua no correcta' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const query = 'UPDATE Users SET password = ? WHERE id = ?';
+        await db.execute(query, [hashedPassword, userId]);
+
+        res.status(200).json({ mensaje: 'Contraseña actualizada exitosamente' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+
 // Actualizar un usuario
 export const updateUser = async (req, res) => {
   const userId = req.user.userId; // Obtener el userId del token de autenticación
@@ -71,6 +103,8 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 
 // Borrar un usuario

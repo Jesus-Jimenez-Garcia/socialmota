@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllUsers, getUserProfile, updateUser, deleteUser } from '../controllers/userController.js';
+import { getAllUsers, getUserProfile, updateUser, deleteUser, changePassword } from '../controllers/userController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
@@ -15,5 +15,8 @@ router.put('/:id', authenticateToken, updateUser);
 
 // Ruta para borrar un usuario
 router.delete('/:id', authenticateToken, deleteUser);
+
+// Ruta para cambiar la contraseña del usuario
+router.post('/change-password', authenticateToken, changePassword);
 
 export default router;

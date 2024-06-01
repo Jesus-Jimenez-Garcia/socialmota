@@ -21,10 +21,11 @@ const AppWrapper = () => {
                 <Route path="/login" element={<Register isLoginMode={true} />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/users" element={<Users />} />
-                <Route path="/profile" element={<ProfileView />} /> {/* Cambiar la ruta a ProfileView */}
+                <Route path="/profile" element={<ProfileView />} />
                 <Route path="/my-posts" element={<Posts filterByUser={true} />} />
                 <Route path="/create-post" element={<CreatePost />} />
-                <Route path="/edit-profile" element={<Register isEditMode={true} />} /> {/* Añadir ruta para editar perfil */}
+                <Route path="/edit-profile" element={<Register isEditMode={true} />} />
+                <Route path="/change-password" element={<Register isChangePasswordMode={true} />} /> {/* Añadir ruta para cambiar contraseña */}
             </Routes>
         </>
     );
