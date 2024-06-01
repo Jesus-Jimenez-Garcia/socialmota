@@ -3,189 +3,196 @@ import { useNavigate } from 'react-router-dom';
 import Post from '../components/Post.jsx';
 
 const Posts = ({ filterByUser = false }) => {
-    const [posts, setPosts] = useState([]);
-    const [userName, setUserName] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1); // Estado para la página actual
-    const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
-    const [sortByPopularity, setSortByPopularity] = useState(false); // Estado para manejar la ordenación por popularidad
-    const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
-    const [showTopButton, setShowTopButton] = useState(false); // Estado para manejar la visibilidad del botón "Volver al inicio"
-    const [following, setFollowing] = useState([]); // Estado para manejar los seguidos del usuario
-    const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
+  const [userName, setUserName] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1); // Estado para la página actual
+  const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
+  const [sortByPopularity, setSortByPopularity] = useState(false); // Estado para manejar la ordenación por popularidad
+  const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
+  const [showTopButton, setShowTopButton] = useState(false); // Estado para manejar la visibilidad del botón "Volver al inicio"
+  const [following, setFollowing] = useState([]); // Estado para manejar los seguidos del usuario
+  const [openCommentsPostId, setOpenCommentsPostId] = useState(null); // Estado para manejar el post con comentarios abiertos
+  const navigate = useNavigate();
 
-    const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
-        try {
-            const token = localStorage.getItem('token');
-            let endpoint = '';
-            if (filterByUser) {
-                endpoint = 'user'; // Endpoint para obtener los posts del usuario autenticado
-            } else if (showFollowed) {
-                endpoint = sortByPopularity ? 'followed/likes' : 'followed';
-            } else {
-                endpoint = sortByPopularity ? 'popular' : '';
-            }
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/posts/${endpoint}?page=${page}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                if (data.length < 10) {
-                    setIsLastPage(true); // Si hay menos de 10 posts, es la última página
-                } else {
-                    setIsLastPage(false); // Si hay 10 posts, aún puede haber más páginas
-                }
-                const formattedData = data.map(post => ({
-                    ...post,
-                    likes: post.likes || 0
-                }));
-                setPosts(formattedData);
-            } else {
-                const errorData = await response.json();
-                setError(errorData.mensaje || 'Error al obtener los posts');
-            }
-        } catch (error) {
-            setError('Error: ' + error.message);
-        } finally {
-            setLoading(false);
+  const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
+    try {
+      const token = localStorage.getItem('token');
+      let endpoint = '';
+      if (filterByUser) {
+        endpoint = 'user'; // Endpoint para obtener los posts del usuario autenticado
+      } else if (showFollowed) {
+        endpoint = sortByPopularity ? 'followed/likes' : 'followed';
+      } else {
+        endpoint = sortByPopularity ? 'popular' : '';
+      }
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/posts/${endpoint}?page=${page}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-    };
-
-    const fetchUserProfile = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setUserName(data.name);
-            } else {
-                const errorData = await response.json();
-                setError(errorData.mensaje || 'Error al obtener la información del usuario');
-            }
-        } catch (error) {
-            setError('Error: ' + error.message);
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length < 10) {
+          setIsLastPage(true); // Si hay menos de 10 posts, es la última página
+        } else {
+          setIsLastPage(false); // Si hay 10 posts, aún puede haber más páginas
         }
-    };
-
-    const fetchFollowing = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers/followed`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setFollowing(data);
-            } else {
-                const errorData = await response.json();
-                setError(errorData.mensaje || 'Error al obtener los seguidos');
-            }
-        } catch (error) {
-            setError('Error: ' + error.message);
-        }
-    };
-
-    useEffect(() => {
-        fetchPosts(page, sortByPopularity, showFollowed, filterByUser);
-        fetchUserProfile();
-        fetchFollowing();
-    }, [page, sortByPopularity, showFollowed, filterByUser]); // Agregar page, sortByPopularity, showFollowed y filterByUser como dependencias
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY === 0 && page === 1) {
-                setShowTopButton(false);
-            } else {
-                setShowTopButton(true);
-            }
-        };
-
-        handleScroll(); // Ejecuta la función inicialmente para establecer el estado correcto
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [page]);
-
-    const handleNextPage = () => {
-        if (!isLastPage) {
-            setPage(prevPage => prevPage + 1);
-        }
-    };
-
-    const handleFirstPage = () => {
-        setPage(1);
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        }); // Desplazamiento suave hacia la parte superior de la página
-    };
-
-    const handleSortByPopularity = () => {
-        setSortByPopularity(prev => !prev);
-        setPage(1); // Reiniciar a la primera página
-    };
-
-    const handleToggleFollowed = () => {
-        setShowFollowed(prevState => !prevState);
-        setSortByPopularity(false);
-        setPage(1); // Reiniciar a la primera página
-    };
-
-    const handleNavigateToCreatePost = () => {
-        navigate('/create-post');
-    };
-
-    if (loading) {
-        return <p>Cargando posts...</p>;
+        const formattedData = data.map(post => ({
+          ...post,
+          likes: post.likes || 0
+        }));
+        setPosts(formattedData);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.mensaje || 'Error al obtener los posts');
+      }
+    } catch (error) {
+      setError('Error: ' + error.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
+  const fetchUserProfile = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUserName(data.name);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.mensaje || 'Error al obtener la información del usuario');
+      }
+    } catch (error) {
+      setError('Error: ' + error.message);
     }
+  };
 
-    return (
-        <div>
-            {!filterByUser && <h1>{userName}, te estábamos esperando</h1>}
-            {/* Botón para redirigir a la página de usuarios */}
-            <button onClick={() => navigate('/users')}>Conocer gente</button>
-            {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
-            {!filterByUser && (
-                <>
-                    <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
-                    <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Más actuales' : 'Más populares'}</button>
-                </>
-            )}
-            {/* Botón para publicar */}
-            <button onClick={handleNavigateToCreatePost}>Publicar</button>
-            {showFollowed && following.length === 0 && (
-                <h2>Aún no sigues a nadie. Comienza a conocer gente de tu pueblo.</h2>
-            )}
-            {posts.length === 0 && filterByUser && (
-                <h2>Aún no has publicado en SocialMota. Tus vecinos te esperan</h2>
-            )}
-            {posts.map(post => (
-                <Post key={post.id} post={post} isUserPost={filterByUser} />
-            ))}
-            <div className="pagination-buttons">
-                {showTopButton && <button onClick={handleFirstPage}>Volver al inicio</button>}
-                <button onClick={handleNextPage} disabled={isLastPage}>Ver más posts</button>
-            </div>
-        </div>
-    );
+  const fetchFollowing = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers/followed`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setFollowing(data);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.mensaje || 'Error al obtener los seguidos');
+      }
+    } catch (error) {
+      setError('Error: ' + error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts(page, sortByPopularity, showFollowed, filterByUser);
+    fetchUserProfile();
+    fetchFollowing();
+  }, [page, sortByPopularity, showFollowed, filterByUser]); // Agregar page, sortByPopularity, showFollowed y filterByUser como dependencias
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY === 0 && page === 1) {
+        setShowTopButton(false);
+      } else {
+        setShowTopButton(true);
+      }
+    };
+
+    handleScroll(); // Ejecuta la función inicialmente para establecer el estado correcto
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [page]);
+
+  const handleNextPage = () => {
+    if (!isLastPage) {
+      setPage(prevPage => prevPage + 1);
+    }
+  };
+
+  const handleFirstPage = () => {
+    setPage(1);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    }); // Desplazamiento suave hacia la parte superior de la página
+  };
+
+  const handleSortByPopularity = () => {
+    setSortByPopularity(prev => !prev);
+    setPage(1); // Reiniciar a la primera página
+  };
+
+  const handleToggleFollowed = () => {
+    setShowFollowed(prevState => !prevState);
+    setSortByPopularity(false);
+    setPage(1); // Reiniciar a la primera página
+  };
+
+  const handleNavigateToCreatePost = () => {
+    navigate('/create-post');
+  };
+
+  if (loading) {
+    return <p>Cargando posts...</p>;
+  }
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>;
+  }
+
+  return (
+    <div>
+      {!filterByUser && <h1>{userName}, te estábamos esperando</h1>}
+      {/* Botón para redirigir a la página de usuarios */}
+      <button onClick={() => navigate('/users')}>Conocer gente</button>
+      {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
+      {!filterByUser && (
+        <>
+          <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
+          <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Más actuales' : 'Más populares'}</button>
+        </>
+      )}
+      {/* Botón para publicar */}
+      <button onClick={handleNavigateToCreatePost}>Publicar</button>
+      {showFollowed && following.length === 0 && (
+        <h2>Aún no sigues a nadie. Comienza a conocer gente de tu pueblo.</h2>
+      )}
+      {posts.length === 0 && filterByUser && (
+        <h2>Aún no has publicado en SocialMota. Tus vecinos te esperan</h2>
+      )}
+      {posts.map(post => (
+        <Post 
+          key={post.id} 
+          post={post} 
+          isUserPost={filterByUser} 
+          openCommentsPostId={openCommentsPostId} 
+          setOpenCommentsPostId={setOpenCommentsPostId} 
+        />
+      ))}
+      <div className="pagination-buttons">
+        {showTopButton && <button onClick={handleFirstPage}>Volver al inicio</button>}
+        <button onClick={handleNextPage} disabled={isLastPage}>Ver más posts</button>
+      </div>
+    </div>
+  );
 };
 
 export default Posts;
