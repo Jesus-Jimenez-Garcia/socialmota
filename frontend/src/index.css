@@ -52,3 +52,28 @@ h2 {
 
   visibility: hidden;
 }
+
+.message-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.message {
+  padding: 10px;
+  margin: 5px 0;
+}
+.sent {
+  text-align: right;
+}
+.received {
+  text-align: left;
+}
+.message-input {
+  display: flex;
+}
+.message-input input {
+  flex: 1;
+  padding: 10px;
+}
+.message-input button {
+  padding: 10px;
+}

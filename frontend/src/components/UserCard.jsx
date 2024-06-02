@@ -1,10 +1,15 @@
-// src/components/UserCard.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import './UserCard.css'; // Importa los estilos del componente
 
 const UserCard = ({ user, isFollowing, onFollow, onUnfollow }) => {
+    const navigate = useNavigate();
     const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
+
+    const handleSendMessage = () => {
+        navigate(`/chat/${user.id}`);
+    };
 
     return (
         <div className="user-card">
@@ -19,8 +24,8 @@ const UserCard = ({ user, isFollowing, onFollow, onUnfollow }) => {
                 {isFollowing ? 'Dejar de seguir' : 'Seguir'}
             </button>
             {isFollowing && (
-                <button onClick={() => alert('Funcionalidad próximamente')}>
-                    Enviar Privado
+                <button onClick={handleSendMessage} style={{ marginTop: '10px' }}>
+                    Enviar privado
                 </button>
             )}
         </div>
