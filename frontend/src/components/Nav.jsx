@@ -1,5 +1,8 @@
+// src/components/Nav.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { fetchWithToken } from '../utils/fetchWithToken';
 import './Nav.css';
 
 const Nav = () => {
@@ -7,25 +10,17 @@ const Nav = () => {
     const [isAtTop, setIsAtTop] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
+    const { logout } = useAuth();
     const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
     useEffect(() => {
-        // Función para obtener la información del perfil del usuario
         const fetchUserProfile = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                const response = await fetchWithToken(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {}, logout);
                 if (response.ok) {
                     const data = await response.json();
                     setUser(data);
                 } else {
-                    // Manejo del error si la solicitud falla
                     console.error('Error al obtener la información del usuario');
                 }
             } catch (error) {
@@ -34,7 +29,7 @@ const Nav = () => {
         };
 
         fetchUserProfile();
-    }, []);
+    }, [logout]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,11 +43,6 @@ const Nav = () => {
             };
         }
     }, [location.pathname]);
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/');
-    };
 
     const handleSocialMotaClick = (e) => {
         if (location.pathname === '/posts' && isAtTop) {
@@ -87,12 +77,12 @@ const Nav = () => {
                             </Link>
                         </>
                     )}
-                    <button onClick={handleLogout} className="nav-link">
+                    <button onClick={logout} className="nav-link">
                         Cerrar sesión
                     </button>
                 </div>
             </nav>
-            <div className="navbar-margin"></div> {/* Espacio extra para que el contenido no quede detrás del navbar */}
+            <div className="navbar-margin"></div>
         </>
     );
 };

@@ -1,5 +1,7 @@
+// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Posts from './pages/Posts';
@@ -7,7 +9,7 @@ import Users from './pages/Users';
 import Nav from './components/Nav';
 import Chat from './pages/Chat';
 import CreatePost from './pages/CreatePost';
-import ProfileView from './pages/ProfileView';  // Importar la nueva vista de perfil
+import ProfileView from './pages/ProfileView';
 
 const AppWrapper = () => {
     const location = useLocation();
@@ -37,7 +39,9 @@ const AppWrapper = () => {
 const App = () => {
     return (
         <Router>
-            <AppWrapper />
+            <AuthProvider>
+                <AppWrapper />
+            </AuthProvider>
         </Router>
     );
 };
