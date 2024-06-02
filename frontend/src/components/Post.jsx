@@ -10,6 +10,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
   const [commentList, setCommentList] = useState([]);
   const [newComment, setNewComment] = useState('');
   const showComments = openCommentsPostId === id;
+  const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
   // Calcular el tiempo transcurrido desde la fecha de publicación
   const timeAgo = moment(created_at).fromNow();
@@ -161,7 +162,12 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
       <div className="post-content">
         <div className={`post-text ${image_url ? '' : 'full'}`}>
           <div className="post-header">
-            {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
+            <img
+              src={profile_picture || defaultProfilePicture}
+              alt={`Foto de ${name}`}
+              className="profile-picture"
+              onError={(e) => e.target.src = defaultProfilePicture}
+            />
             <p className="post-name"><strong>{name}</strong></p>
           </div>
           <p>{content}</p>

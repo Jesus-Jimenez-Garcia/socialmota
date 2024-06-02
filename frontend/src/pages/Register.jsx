@@ -69,7 +69,7 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
                 : isChangePasswordMode
                 ? `${process.env.REACT_APP_BACKEND_URL}/api/users/change-password`
                 : `${process.env.REACT_APP_BACKEND_URL}/api/auth/register`;
-            const method = isEditMode || isChangePasswordMode ? 'POST' : 'POST';
+            const method = isEditMode ? 'PUT' : 'POST';
 
             const body = isEditMode
                 ? { profile_picture: profilePicture, name, description }

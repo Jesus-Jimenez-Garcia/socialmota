@@ -1,4 +1,3 @@
-// src/pages/ProfileView.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -6,6 +5,7 @@ const ProfileView = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
     useEffect(() => {
         // Función para obtener la información del perfil del usuario
@@ -46,7 +46,12 @@ const ProfileView = () => {
         <div>
             <h2>Mi perfil</h2>
             <div>
-                <img src={user.profile_picture} alt={`Foto de ${user.name}`} style={{ width: '150px', borderRadius: '50%' }} />
+                <img
+                    src={user.profile_picture || defaultProfilePicture}
+                    alt={`Foto de ${user.name}`}
+                    style={{ width: '150px', borderRadius: '50%' }}
+                    onError={(e) => e.target.src = defaultProfilePicture}
+                />
                 <h3 style={{ fontWeight: 'bold' }}>{user.name}</h3>
                 <p>{user.description}</p>
             </div>

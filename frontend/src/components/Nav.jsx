@@ -7,6 +7,7 @@ const Nav = () => {
     const [isAtTop, setIsAtTop] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
+    const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
     useEffect(() => {
         // Función para obtener la información del perfil del usuario
@@ -63,38 +64,37 @@ const Nav = () => {
     };
 
     return (
-      <>
-          <nav className="navbar">
-              <Link 
-                  to="/posts" 
-                  className={`navbar-brand ${location.pathname === '/posts' && isAtTop ? 'inactive-link' : ''}`}
-                  onClick={handleSocialMotaClick}
-              >
-                  SocialMota
-              </Link>
-              <div className="navbar-links">
-                  {user && (
-                      <>
-                          {user.profile_picture && (
-                              <img
-                                  src={user.profile_picture}
-                                  alt={`Foto de ${user.name}`}
-                                  className="nav-profile-picture"
-                              />
-                          )}
-                          <Link to="/profile" className="nav-link">
-                              Mi perfil
-                          </Link>
-                      </>
-                  )}
-                  <button onClick={handleLogout} className="nav-link">
-                      Cerrar sesión
-                  </button>
-              </div>
-          </nav>
-          <div className="navbar-margin"></div> {/* Espacio extra para que el contenido no quede detrás del navbar */}
-      </>
-  );
+        <>
+            <nav className="navbar">
+                <Link 
+                    to="/posts" 
+                    className={`navbar-brand ${location.pathname === '/posts' && isAtTop ? 'inactive-link' : ''}`}
+                    onClick={handleSocialMotaClick}
+                >
+                    SocialMota
+                </Link>
+                <div className="navbar-links">
+                    {user && (
+                        <>
+                            <img
+                                src={user.profile_picture || defaultProfilePicture}
+                                alt={`Foto de ${user.name}`}
+                                className="nav-profile-picture"
+                                onError={(e) => e.target.src = defaultProfilePicture}
+                            />
+                            <Link to="/profile" className="nav-link">
+                                Mi perfil
+                            </Link>
+                        </>
+                    )}
+                    <button onClick={handleLogout} className="nav-link">
+                        Cerrar sesión
+                    </button>
+                </div>
+            </nav>
+            <div className="navbar-margin"></div> {/* Espacio extra para que el contenido no quede detrás del navbar */}
+        </>
+    );
 };
 
 export default Nav;
