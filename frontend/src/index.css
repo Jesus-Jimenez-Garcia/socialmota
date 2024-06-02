@@ -53,6 +53,8 @@ h2 {
   visibility: hidden;
 }
 
+/* Estilos de chat */
+
 .message-list {
   max-height: 400px;
   overflow-y: auto;

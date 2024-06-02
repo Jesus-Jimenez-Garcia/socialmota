@@ -6,6 +6,7 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [error, setError] = useState(null);
+    const [contactName, setContactName] = useState('');
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -31,7 +32,31 @@ const Chat = () => {
             }
         };
 
+        const fetchContactName = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setError('Token faltante');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${contactId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Error fetching contact name');
+                }
+                const data = await response.json();
+                setContactName(data.name);
+            } catch (error) {
+                setError(error.message);
+            }
+        };
+
         fetchMessages();
+        fetchContactName();
     }, [contactId]);
 
     const handleSendMessage = async () => {
@@ -66,6 +91,7 @@ const Chat = () => {
     return (
         <div>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            <h2>Tu conversación con {contactName}</h2>
             <div className="message-list">
                 {messages.map(message => (
                     <div key={message.id} className={`message ${message.sender_id === contactId ? 'received' : 'sent'}`}>

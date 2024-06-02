@@ -2,7 +2,6 @@ import db from '../config/db.js';
 import bcrypt from 'bcrypt';
 
 // Obtener todos los usuarios con paginación
-
 export const getAllUsers = async (req, res) => {
   const userId = req.user.userId; // ID del usuario autenticado
   const page = parseInt(req.query.page) || 1;
@@ -21,7 +20,6 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-
 // Obtener el perfil del usuario autenticado
 export const getUserProfile = async (req, res) => {
   const userId = req.user.userId;
@@ -37,6 +35,20 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+// Obtener los detalles de un usuario específico
+export const getUserDetails = async (req, res) => {
+  const userId = req.params.id;
+  try {
+      const query = 'SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?';
+      const [results] = await db.execute(query, [userId]);
+      if (results.length === 0) {
+          return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+      }
+      res.status(200).json(results[0]);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
 
 // Cambiar la contraseña del usuario
 export const changePassword = async (req, res) => {
@@ -67,7 +79,6 @@ export const changePassword = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
-
 
 // Actualizar un usuario
 export const updateUser = async (req, res) => {
@@ -103,9 +114,6 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
-
 
 // Borrar un usuario
 export const deleteUser = async (req, res) => {
