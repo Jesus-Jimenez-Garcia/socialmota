@@ -16,8 +16,8 @@ router.get('/:id', authenticateToken, getUserDetails);
 // Ruta para actualizar un usuario
 router.put('/:id', authenticateToken, updateUser);
 
-// Ruta para borrar un usuario
-router.delete('/:id', authenticateToken, deleteUser);
+// Ruta para borrar el perfil del usuario autenticado
+router.delete('/profile', authenticateToken, deleteUser);
 
 // Ruta para cambiar la contraseña del usuario
 router.post('/change-password', authenticateToken, changePassword);
