@@ -1,4 +1,3 @@
-// src/pages/Users.jsx
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
 
@@ -52,7 +51,7 @@ const Users = ({ showFollowedOnly = false }) => {
             if (response.ok) {
                 const data = await response.json();
                 setFollowing(data.map(f => f.id)); // Almacenar solo los IDs de los usuarios seguidos
-                setUsers(data); // Mostrar solo los usuarios seguidos
+                setUsers(data); // Mostrar solo los usuarios seguidos si showFollowedOnly es true
             } else {
                 const errorData = await response.json();
                 setError(errorData.mensaje || 'Error al obtener los seguidores');
@@ -77,6 +76,9 @@ const Users = ({ showFollowedOnly = false }) => {
             });
             if (response.ok) {
                 setFollowing(prev => [...prev, userId]); // Añadir el ID del usuario seguido
+                if (showFollowedOnly) {
+                    setUsers(prev => [...prev, { id: userId }]); // Añadir el usuario a la lista si se muestra solo usuarios seguidos
+                }
                 alert('Usuario seguido exitosamente');
             } else {
                 const errorData = await response.json();
@@ -100,6 +102,9 @@ const Users = ({ showFollowedOnly = false }) => {
             });
             if (response.ok) {
                 setFollowing(prev => prev.filter(id => id !== userId)); // Remover el ID del usuario dejado de seguir
+                if (showFollowedOnly) {
+                    setUsers(prev => prev.filter(user => user.id !== userId)); // Remover el usuario de la lista si se muestra solo usuarios seguidos
+                }
                 alert('Usuario dejado de seguir exitosamente');
             } else {
                 const errorData = await response.json();
@@ -109,6 +114,10 @@ const Users = ({ showFollowedOnly = false }) => {
             setError('Error: ' + error.message);
         }
     };
+
+    useEffect(() => {
+        fetchFollowedUsers(); // Obtener la lista de usuarios seguidos al montar el componente
+    }, []);
 
     useEffect(() => {
         if (showFollowedOnly) {

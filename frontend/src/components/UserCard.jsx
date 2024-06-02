@@ -1,3 +1,4 @@
+// src/components/UserCard.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import './UserCard.css'; // Importa los estilos del componente
@@ -17,6 +18,11 @@ const UserCard = ({ user, isFollowing, onFollow, onUnfollow }) => {
             <button onClick={() => isFollowing ? onUnfollow(user.id) : onFollow(user.id)}>
                 {isFollowing ? 'Dejar de seguir' : 'Seguir'}
             </button>
+            {isFollowing && (
+                <button onClick={() => alert('Funcionalidad próximamente')}>
+                    Enviar Privado
+                </button>
+            )}
         </div>
     );
 };

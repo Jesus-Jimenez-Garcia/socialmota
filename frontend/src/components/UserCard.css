@@ -1,3 +1,5 @@
+/* src/components/UserCard.css */
+
 /* Estilos de los usuarios */
 .user-container {
   display: flex;
@@ -54,4 +56,12 @@
 
 .user button:hover {
   background-color: #0056b3;
+}
+
+.user-card button:nth-child(5) {
+  background-color: #28a745; /* Color diferente para el botón "Enviar Privado" */
+}
+
+.user-card button:nth-child(5):hover {
+  background-color: #218838;
 }
