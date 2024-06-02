@@ -1,7 +1,8 @@
+// src/pages/Users.jsx
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
 
-const Users = () => {
+const Users = ({ showFollowedOnly = false }) => {
     const [users, setUsers] = useState([]);
     const [following, setFollowing] = useState([]); // Estado para los usuarios seguidos
     const [error, setError] = useState('');
@@ -38,7 +39,7 @@ const Users = () => {
         }
     };
 
-    const fetchFollowing = async () => {
+    const fetchFollowedUsers = async () => {
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/followers/followed`, {
@@ -51,12 +52,15 @@ const Users = () => {
             if (response.ok) {
                 const data = await response.json();
                 setFollowing(data.map(f => f.id)); // Almacenar solo los IDs de los usuarios seguidos
+                setUsers(data); // Mostrar solo los usuarios seguidos
             } else {
                 const errorData = await response.json();
                 setError(errorData.mensaje || 'Error al obtener los seguidores');
             }
         } catch (error) {
             setError('Error: ' + error.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -107,9 +111,12 @@ const Users = () => {
     };
 
     useEffect(() => {
-        fetchUsers(page);
-        fetchFollowing();
-    }, [page]); // Agregar page como dependencia
+        if (showFollowedOnly) {
+            fetchFollowedUsers();
+        } else {
+            fetchUsers(page);
+        }
+    }, [page, showFollowedOnly]); // Agregar page y showFollowedOnly como dependencias
 
     const handleNextPage = () => {
         if (!isLastPage) {
@@ -132,7 +139,7 @@ const Users = () => {
 
     return (
         <div>
-            <h2>Usuarios</h2>
+            <h2>{showFollowedOnly ? 'Usuarios Seguidos' : 'Usuarios'}</h2>
             <div className="user-container">
                 {users.map(user => (
                     <UserCard 
@@ -144,10 +151,12 @@ const Users = () => {
                     />
                 ))}
             </div>
-            <div className="pagination-buttons">
-                <button onClick={handleFirstPage}>Volver al inicio</button>
-                {!isLastPage && <button onClick={handleNextPage}>Ver más usuarios</button>}
-            </div>
+            {!showFollowedOnly && (
+                <div className="pagination-buttons">
+                    <button onClick={handleFirstPage}>Volver al inicio</button>
+                    {!isLastPage && <button onClick={handleNextPage}>Ver más usuarios</button>}
+                </div>
+            )}
         </div>
     );
 };

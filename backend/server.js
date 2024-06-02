@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import commentRoutes from './routes/comments.js';
 import likeRoutes from './routes/likes.js';
 import followerRoutes from './routes/followers.js';
+import messageRoutes from './routes/messages.js'; // Asegúrate de importar messageRoutes
 import { authenticateToken } from './middlewares/authMiddleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/comments', authenticateToken, commentRoutes);
 app.use('/api/likes', authenticateToken, likeRoutes);
 app.use('/api/followers', authenticateToken, followerRoutes);
+app.use('/api/messages', authenticateToken, messageRoutes); // Corrige esta línea
 
 // Middleware de manejo de errores
 app.use(errorHandler);

@@ -1,3 +1,4 @@
+// src/pages/ProfileView.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,6 +8,7 @@ const ProfileView = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Función para obtener la información del perfil del usuario
         const fetchUserProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -52,6 +54,7 @@ const ProfileView = () => {
                 <button onClick={() => navigate('/my-posts')}>Ver mis posts</button>
                 <button onClick={() => navigate('/edit-profile')}>Editar perfil</button>
                 <button onClick={() => navigate('/change-password')}>Cambiar Contraseña</button>
+                <button onClick={() => navigate('/followed-users')}>Usuarios Seguidos</button>
             </div>
         </div>
     );
