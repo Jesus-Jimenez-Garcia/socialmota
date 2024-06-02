@@ -27,36 +27,25 @@ const Chat = () => {
                 }
                 const data = await response.json();
                 setMessages(data);
-            } catch (error) {
-                setError(error.message);
-            }
-        };
 
-        const fetchContactName = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setError('Token faltante');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${contactId}`, {
+                // Fetch the contact's name
+                const contactResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${contactId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 });
-                if (!response.ok) {
+                if (!contactResponse.ok) {
                     throw new Error('Error fetching contact name');
                 }
-                const data = await response.json();
-                setContactName(data.name);
+                const contactData = await contactResponse.json();
+                setContactName(contactData.name);
+
             } catch (error) {
                 setError(error.message);
             }
         };
 
         fetchMessages();
-        fetchContactName();
     }, [contactId]);
 
     const handleSendMessage = async () => {
@@ -94,7 +83,10 @@ const Chat = () => {
             <h2>Tu conversación con {contactName}</h2>
             <div className="message-list">
                 {messages.map(message => (
-                    <div key={message.id} className={`message ${message.sender_id === contactId ? 'received' : 'sent'}`}>
+                    <div 
+                        key={message.id} 
+                        className={`message ${message.sender_id === parseInt(contactId) ? 'received' : 'sent'}`}
+                    >
                         {message.content}
                     </div>
                 ))}
