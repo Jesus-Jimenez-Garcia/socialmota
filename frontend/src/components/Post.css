@@ -85,7 +85,25 @@
 .comment {
   padding: 5px 0;
   border-bottom: 1px solid #ddd;
+  position: relative;
 }
+
+.delete-comment-button {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.delete-comment-button:hover {
+  background-color: #c82333;
+}
+
 
 .comment-form {
   display: flex;
