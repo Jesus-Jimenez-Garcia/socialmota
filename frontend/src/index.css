@@ -65,22 +65,29 @@ h2 {
   margin: 5px 0;
   border-radius: 5px;
   max-width: 70%;
+  display: flex; /* Añadir flexbox */
+  align-items: center; /* Centrar verticalmente */
+}
+
+.message img.message-profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px; /* Espacio entre la imagen y el texto */
 }
 
 .sent {
-  text-align: right;
+  justify-content: flex-end;
   color: #006400;
   /* Verde oscuro */
-
   margin-left: auto;
   /* Para alinear a la derecha */
 }
 
 .received {
-  text-align: left;
+  justify-content: flex-start;
   color: #00008B;
   /* Azul oscuro */
-
   margin-right: auto;
   /* Para alinear a la izquierda */
 }

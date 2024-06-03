@@ -10,6 +10,7 @@ import Nav from './components/Nav';
 import Chat from './pages/Chat';
 import CreatePost from './pages/CreatePost';
 import ProfileView from './pages/ProfileView';
+import Conversations from './pages/Conversations';  // Importar la nueva vista de conversaciones
 
 const AppWrapper = () => {
     const location = useLocation();
@@ -31,6 +32,7 @@ const AppWrapper = () => {
                 <Route path="/change-password" element={<Register isChangePasswordMode={true} />} />
                 <Route path="/chat/:contactId" element={<Chat />} />
                 <Route path="/followed-users" element={<Users showFollowedOnly={true} />} />
+                <Route path="/conversations" element={<Conversations />} /> {/* Nueva ruta */}
             </Routes>
         </>
     );

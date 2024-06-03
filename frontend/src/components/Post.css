@@ -14,16 +14,19 @@
 .post-content {
   display: flex;
   width: 100%; /* Ajustar al 100% del contenedor */
+  margin-right: 10%;
 }
 
 .post-image {
+  display: flex;
+  align-items: center;  /* Alineación vertical */
   width: 25%; /* Ocupa el 25% del contenedor */
   margin-right: 10px; /* Espacio entre la imagen y el contenido */
 }
 
 .post-image img {
   width: 100%;
-  height: auto; /* Ajustar la altura al contenido */
+  height: 100%; /* Ajustar la altura al contenido */
   border-radius: 5px;
   object-fit: cover;
 }
