@@ -18,9 +18,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60%;
+  width: 80%;
   height: 70%;
-  padding: 40px;
+  padding: 20px;
   background-image: url('https://img.freepik.com/premium-photo/mota-del-cuervo-windmills-cuenca_79295-17793.jpg');
   background-size: cover;
   background-position: center;
@@ -36,9 +36,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0); /* Inicia sin color */
   z-index: 1;
   border-radius: 15px;
+  animation: darkenOverlay 2s ease-in forwards; /* Aplicar la animación aquí */
 }
 
 /* Contenido principal para el título y los botones */
@@ -49,23 +50,27 @@
 
 /* Estilo para el título principal */
 .content h1 {
-  font-size: 5em; /* Tamaño grande del título */
+  font-size: 4vw; /* Tamaño relativo al ancho de la pantalla */
   margin-bottom: 0.5em;
   text-transform: uppercase;
   letter-spacing: 2px;
-  animation: fadeIn 2s ease-in;
+  animation: fadeIn 2s ease-in forwards; /* Añadir forwards para mantener el estado final */
   color: #ffffff;
-  font-family: 'Roboto', sans-serif; /* Cambiada la fuente */
+  font-family: "Concert One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* Estilo para el subtítulo */
 .content h2 {
-  font-size: 2em; /* Tamaño grande del subtítulo */
+  font-size: 2vw; /* Tamaño relativo al ancho de la pantalla */
   margin-bottom: 1em;
   letter-spacing: 1px;
-  animation: fadeIn 2s ease-in;
+  animation: fadeIn 2s ease-in forwards; /* Añadir forwards para mantener el estado final */
   color: #9790dd; /* Color cambiado para mejor contraste */
-  font-family: 'Roboto', sans-serif; /* Cambiada la fuente */
+  font-family: "Concert One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* Animación de entrada */
@@ -78,22 +83,34 @@
   }
 }
 
+/* Nueva animación para oscurecer el fondo */
+@keyframes darkenOverlay {
+  from {
+      background: rgba(0, 0, 0, 0); /* Sin color al inicio */
+  }
+  to {
+      background: rgba(0, 0, 0, 0.6); /* Oscurecido al final */
+  }
+}
+
 /* Estilo para el contenedor de los botones */
 .buttons {
   display: flex;
   gap: 1em;
   justify-content: center;
+  flex-wrap: wrap; /* Permitir que los botones se envuelvan en pantallas más pequeñas */
 }
 
 /* Estilo general para los botones */
 .btn {
   padding: 0.75em 2em;
-  font-size: 1.2em;
+  font-size: 1.5vw; /* Tamaño relativo al ancho de la pantalla */
   border: 2px solid white;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s, color 0.3s, border-color 0.3s;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 2s ease-in forwards; /* Añadir forwards para mantener el estado final */
 }
 
 /* Estilo específico para el botón de iniciar sesión */
@@ -113,4 +130,45 @@
   background: white;
   color: black;
   border-color: black;
+}
+
+/* Media queries para ajustar los estilos en pantallas más pequeñas */
+@media (max-width: 768px) {
+  .background-container {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .content h1 {
+    font-size: 8vw;
+  }
+
+  .content h2 {
+    font-size: 4vw;
+  }
+
+  .btn {
+    font-size: 3vw;
+    padding: 0.5em 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .background-container {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .content h1 {
+    font-size: 10vw;
+  }
+
+  .content h2 {
+    font-size: 5vw;
+  }
+
+  .btn {
+    font-size: 4vw;
+    padding: 0.5em 0.5em;
+  }
 }
