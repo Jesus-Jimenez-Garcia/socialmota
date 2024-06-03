@@ -29,3 +29,22 @@ export const getMessages = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+
+// Nueva función para obtener las conversaciones
+export const getConversations = async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+      const query = `
+          SELECT DISTINCT u.id, u.username, u.profile_picture, u.name
+          FROM Users u
+          JOIN Messages m ON (u.id = m.sender_id OR u.id = m.receiver_id)
+          WHERE (m.sender_id = ? OR m.receiver_id = ?) AND u.id != ?
+      `;
+      const [results] = await db.execute(query, [userId, userId, userId]);
+      res.status(200).json(results);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
