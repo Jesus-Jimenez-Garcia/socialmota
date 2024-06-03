@@ -1,0 +1,116 @@
+/* Estilos generales para centrar y definir el fondo */
+.home-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: white; /* Fondo blanco */
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Contenedor de la imagen de fondo y el contenido */
+.background-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 70%;
+  padding: 40px;
+  background-image: url('https://img.freepik.com/premium-photo/mota-del-cuervo-windmills-cuenca_79295-17793.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* Superposición para oscurecer el fondo y hacer el texto más legible */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  border-radius: 15px;
+}
+
+/* Contenido principal para el título y los botones */
+.content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Estilo para el título principal */
+.content h1 {
+  font-size: 5em; /* Tamaño grande del título */
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation: fadeIn 2s ease-in;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif; /* Cambiada la fuente */
+}
+
+/* Estilo para el subtítulo */
+.content h2 {
+  font-size: 2em; /* Tamaño grande del subtítulo */
+  margin-bottom: 1em;
+  letter-spacing: 1px;
+  animation: fadeIn 2s ease-in;
+  color: #9790dd; /* Color cambiado para mejor contraste */
+  font-family: 'Roboto', sans-serif; /* Cambiada la fuente */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+/* Estilo para el contenedor de los botones */
+.buttons {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+
+/* Estilo general para los botones */
+.btn {
+  padding: 0.75em 2em;
+  font-size: 1.2em;
+  border: 2px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo específico para el botón de iniciar sesión */
+.btn.login {
+  background: transparent;
+  color: white;
+}
+
+/* Estilo específico para el botón de crear usuario */
+.btn.register {
+  background: transparent;
+  color: white;
+}
+
+/* Efecto de hover para los botones */
+.btn:hover {
+  background: white;
+  color: black;
+  border-color: black;
+}
