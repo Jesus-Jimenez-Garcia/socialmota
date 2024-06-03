@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Register.css';
 
 const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMode = false }) => {
     const [username, setUsername] = useState('');
@@ -141,94 +142,108 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
     };
 
     return (
-        <div>
-            <h2>
+        <div className="register-container">
+            <h2 className="register-title">
                 {isEditMode ? 'Editar Perfil' : isLoginMode ? 'Iniciar Sesión' : isChangePasswordMode ? 'Cambiar Contraseña' : 'Registrar Usuario'}
             </h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="register-form">
                 {!isEditMode && !isChangePasswordMode && (
                     <>
-                        <div>
-                            <label>Nombre de Usuario</label>
+                        <div className="form-group">
+                            <label className="form-label">Nombre de Usuario</label>
                             <input
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
-                                maxLength={40} // Limita la longitud a 40 caracteres
+                                maxLength={40}
+                                placeholder="Nombre de Usuario"
+                                className="form-input"
                             />
                         </div>
-                        <div>
-                            <label>Contraseña</label>
+                        <div className="form-group">
+                            <label className="form-label">Contraseña</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                placeholder="Contraseña"
+                                className="form-input"
                             />
                         </div>
                     </>
                 )}
                 {isChangePasswordMode && (
                     <>
-                        <div>
-                            <label>Contraseña Antigua</label>
+                        <div className="form-group">
+                            <label className="form-label">Contraseña Antigua</label>
                             <input
                                 type="password"
                                 value={oldPassword}
                                 onChange={(e) => setOldPassword(e.target.value)}
                                 required
+                                placeholder="Contraseña Antigua"
+                                className="form-input"
                             />
                         </div>
-                        <div>
-                            <label>Nueva Contraseña</label>
+                        <div className="form-group">
+                            <label className="form-label">Nueva Contraseña</label>
                             <input
                                 type="password"
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 required
+                                placeholder="Nueva Contraseña"
+                                className="form-input"
                             />
                         </div>
                     </>
                 )}
                 {!isLoginMode && !isChangePasswordMode && (
                     <>
-                        <div>
-                            <label>Foto de Perfil (URL)</label>
+                        <div className="form-group">
+                            <label className="form-label">Foto de Perfil (URL)</label>
                             <input
                                 type="text"
                                 value={profilePicture}
                                 onChange={(e) => setProfilePicture(e.target.value)}
+                                placeholder="Foto de Perfil (URL)"
+                                className="form-input"
                             />
                         </div>
-                        <div>
-                            <label>Nombre</label>
+                        <div className="form-group">
+                            <label className="form-label">Nombre</label>
                             <input
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                maxLength={40} // Limita la longitud a 40 caracteres
+                                maxLength={40}
+                                placeholder="Nombre"
+                                className="form-input"
                             />
                         </div>
-                        <div>
-                            <label>Descripción</label>
+                        <div className="form-group">
+                            <label className="form-label">Descripción</label>
                             <textarea
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value.slice(0, 100))} // Limita la longitud a 100 caracteres
+                                onChange={(e) => setDescription(e.target.value.slice(0, 100))}
+                                placeholder="Descripción"
+                                className="form-textarea"
                             ></textarea>
                         </div>
                     </>
                 )}
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" disabled={loading}>
+                {error && <p className="error-message">{error}</p>}
+                <button type="submit" disabled={loading} className="form-button">
                     {loading ? 'Cargando...' : isEditMode ? 'Actualizar' : isLoginMode ? 'Iniciar Sesión' : isChangePasswordMode ? 'Cambiar Contraseña' : 'Registrar'}
                 </button>
                 {isEditMode && !isChangePasswordMode && (
-                    <button type="button" onClick={handleDeleteAccount} className="delete-button" style={{ marginLeft: '10px' }}>
+                    <button type="button" onClick={handleDeleteAccount} className="form-button delete-button">
                         Borrar cuenta
                     </button>
                 )}
-                <button type="button" onClick={handleBack} style={{ marginLeft: '10px' }}>
+                <button type="button" onClick={handleBack} className="form-button">
                     Volver
                 </button>
             </form>

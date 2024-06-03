@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './CreatePost.css';
 
 const CreatePost = () => {
     const [content, setContent] = useState('');
@@ -37,19 +38,33 @@ const CreatePost = () => {
     };
 
     return (
-        <div>
-            <h2>Publicar Nuevo Post</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Contenido</label>
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
+        <div className="create-post-container">
+            <h2 className="create-post-title">Publicar Nuevo Post</h2>
+            <form onSubmit={handleSubmit} className="create-post-form">
+                <div className="form-group">
+                    <label className="form-label">Contenido</label>
+                    <textarea 
+                        value={content} 
+                        onChange={(e) => setContent(e.target.value)} 
+                        required 
+                        className="form-textarea"
+                        placeholder="Escribe el contenido del post"
+                    />
                 </div>
-                <div>
-                    <label>URL de la Imagen (opcional)</label>
-                    <input type="text" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                <div className="form-group">
+                    <label className="form-label">URL de la Imagen (opcional)</label>
+                    <input 
+                        type="text" 
+                        value={imageUrl} 
+                        onChange={(e) => setImageUrl(e.target.value)} 
+                        className="form-input"
+                        placeholder="https://example.com/imagen.jpg"
+                    />
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Publicar'}</button>
+                {error && <p className="error-message">{error}</p>}
+                <button type="submit" disabled={loading} className="form-button">
+                    {loading ? 'Cargando...' : 'Publicar'}
+                </button>
             </form>
         </div>
     );
