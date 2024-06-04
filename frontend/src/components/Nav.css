@@ -1,52 +1,127 @@
+/* Estilo para la barra de navegación */
 .navbar {
   width: 100%;
   padding: 15px;
-  background-color: #007bff;
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
   color: white;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Asegura que el contenido se distribuya correctamente */
-  position: fixed; /* Fija la barra de navegación en la parte superior */
-  top: 0; /* Alinea la barra de navegación en la parte superior */
-  left: 0; /* Alinea la barra de navegación a la izquierda */
-  z-index: 1000; /* Asegura que la barra de navegación esté encima de otros elementos */
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s;
 }
 
+/* Espacio para que el contenido no quede detrás del navbar */
 .navbar-margin {
-  margin-top: 100px; /* Ajusta este valor según la altura de tu navbar */
+  margin-top: 7em; /* Ajusta este valor según la altura de tu navbar */
 }
 
+/* Estilo para la marca de la navbar */
 .navbar-brand {
-  font-size: 1.5em;
+  font-size: 2em;
   font-weight: bold;
   color: white;
   text-decoration: none;
+  font-family: "Concert One", sans-serif;
+  transition: color 0.3s;
 }
 
+.navbar-brand.inactive-link {
+  pointer-events: none;
+  opacity: 1; /* No cambia la opacidad cuando está desactivado */
+}
+
+.navbar-brand:hover:not(.inactive-link) {
+  color: #ffcc00; /* Color diferente al pasar el mouse */
+}
+
+/* Contenedor de los enlaces de la navbar */
 .navbar-links {
   display: flex;
   align-items: center;
+  margin-right: 2em;
 }
 
 .nav-link {
-  margin-left: 20px; /* Espacio entre los enlaces */
+  margin-left: 20px;
   font-size: 1em;
   color: white;
   text-decoration: none;
+  transition: color 0.3s;
 }
 
 .nav-link:hover {
-  text-decoration: underline; /* Subraya los enlaces al pasar el mouse */
+  color: #ffcc00;
+  text-decoration: underline;
 }
 
+/* Estilo para la imagen de perfil en la navbar */
 .nav-profile-picture {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin-right: 10px;
-  
+  border: 2px solid white;
+  transition: transform 0.3s;
 }
 
-.inactive-link {
-  pointer-events: none;
+.nav-profile-picture:hover {
+  transform: scale(1.1);
+}
+
+/* Menu desplegable para dispositivos móviles */
+.dropdown {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 60px; /* Ajusta esto según sea necesario */
+  background-color: #007bff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 999; /* Asegura que el menú esté por encima de otros elementos */
+}
+
+.dropdown a,
+.dropdown button {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown a:hover,
+.dropdown button:hover {
+  background-color: #0056b3;
+  border-radius: 5px;
+}
+
+.nav-profile-picture-container {
+  position: relative;
+  display: none;
+  margin-right: 2em;
+}
+
+.nav-profile-picture-container:hover .dropdown,
+.nav-profile-picture-container:focus-within .dropdown {
+  display: block;
+}
+
+/* Estilos para responsive */
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+
+  .nav-profile-picture-container {
+    display: block;
+  }
 }

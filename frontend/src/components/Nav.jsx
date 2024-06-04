@@ -1,4 +1,3 @@
-// src/components/Nav.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -56,8 +55,8 @@ const Nav = () => {
     return (
         <>
             <nav className="navbar">
-                <Link 
-                    to="/posts" 
+                <Link
+                    to="/posts"
                     className={`navbar-brand ${location.pathname === '/posts' && isAtTop ? 'inactive-link' : ''}`}
                     onClick={handleSocialMotaClick}
                 >
@@ -75,12 +74,26 @@ const Nav = () => {
                             <Link to="/profile" className="nav-link">
                                 Mi perfil
                             </Link>
+                            <Link onClick={logout} className="nav-link">
+                                Cerrar sesión
+                            </Link>
                         </>
                     )}
-                    <button onClick={logout} className="nav-link">
-                        Cerrar sesión
-                    </button>
                 </div>
+                {user && (
+                    <div className="nav-profile-picture-container">
+                        <img
+                            src={user.profile_picture || defaultProfilePicture}
+                            alt={`Foto de ${user.name}`}
+                            className="nav-profile-picture"
+                            onError={(e) => e.target.src = defaultProfilePicture}
+                        />
+                        <div className="dropdown">
+                            <Link to="/profile">Mi perfil</Link>
+                            <Link onClick={logout}>Cerrar sesión</Link>
+                        </div>
+                    </div>
+                )}
             </nav>
             <div className="navbar-margin"></div>
         </>
