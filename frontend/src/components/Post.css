@@ -1,7 +1,7 @@
 .post {
   border: 1px solid #000;
   padding: 15px;
-  margin: 10px 0;
+  margin: 10px 5em;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -94,7 +94,6 @@
 
 .delete-comment-button {
   position: absolute;
-  padding: 200px;
   right: 10px;
   top: 5px;
   background-color: #dc3545;

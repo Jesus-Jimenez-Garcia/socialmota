@@ -1,6 +1,6 @@
-// src/pages/ProfileView.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './ProfileView.css';
 
 const ProfileView = () => {
     const [user, setUser] = useState(null);
@@ -35,27 +35,27 @@ const ProfileView = () => {
     }, []);
 
     if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
+        return <p className="error-message">{error}</p>;
     }
 
     if (!user) {
-        return <p>Cargando...</p>;
+        return <p className="loading-message">Cargando...</p>;
     }
 
     return (
-        <div>
+        <div className="profile-container">
             <h2>Mi perfil</h2>
-            <div>
+            <div className="profile-info">
                 <img
                     src={user.profile_picture || defaultProfilePicture}
                     alt={`Foto de ${user.name}`}
-                    style={{ width: '150px', borderRadius: '50%' }}
+                    className="profile-picture"
                     onError={(e) => e.target.src = defaultProfilePicture}
                 />
-                <h3 style={{ fontWeight: 'bold' }}>{user.name}</h3>
+                <h3>{user.name}</h3>
                 <p>{user.description}</p>
             </div>
-            <div>
+            <div className="profile-buttons">
                 <button onClick={() => navigate('/my-posts')}>Ver mis posts</button>
                 <button onClick={() => navigate('/edit-profile')}>Editar perfil</button>
                 <button onClick={() => navigate('/change-password')}>Cambiar Contraseña</button>

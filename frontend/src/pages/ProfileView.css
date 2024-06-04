@@ -1,0 +1,93 @@
+/* Contenedor principal del perfil */
+.profile-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Título del perfil */
+.profile-container h2 {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: "Concert One", sans-serif;
+}
+
+/* Información del perfil */
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Imagen del perfil */
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 3px solid #007bff;
+}
+
+/* Nombre del usuario */
+.profile-info h3 {
+  font-size: 1.8em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Descripción del usuario */
+.profile-info p {
+  font-size: 1.2em;
+  color: #666;
+}
+
+/* Contenedor de botones */
+.profile-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Estilo general para los botones */
+.profile-buttons button {
+  width: 80%;
+  max-width: 300px;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: "Concert One", sans-serif;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, color 0.3s, transform 0.3s;
+}
+
+.profile-buttons button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Mensaje de error */
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Mensaje de carga */
+.loading-message {
+  text-align: center;
+  font-size: 1.5em;
+  color: #333;
+}
