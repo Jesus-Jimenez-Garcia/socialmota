@@ -8,6 +8,7 @@
   display: flex; /* Utilizar Flexbox */
   flex-direction: column; /* Cambiado a columna para incluir la sección de comentarios */
   height: auto; /* Altura automática para ajustarse al contenido */
+  
   box-sizing: border-box; /* Incluir padding y border en el tamaño total */
 }
 

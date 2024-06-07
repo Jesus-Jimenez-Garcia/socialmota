@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './Chat.css';
 
 const Chat = () => {
@@ -9,6 +9,7 @@ const Chat = () => {
     const [error, setError] = useState(null);
     const [contactName, setContactName] = useState('');
     const [userProfiles, setUserProfiles] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -94,33 +95,34 @@ const Chat = () => {
     };
 
     return (
-        <div className="chat-container">
-            {error && <p className="error-message">{error}</p>}
-            <h2 className="chat-header">Tu conversación con {contactName}</h2>
-            <div className="message-list">
-                {messages.map(message => (
-                    <div key={message.id} className={`message ${message.sender_id === parseInt(contactId) ? 'received' : 'sent'}`}>
-                        <img
-                            src={userProfiles[message.sender_id]?.profile_picture || 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg'}
-                            alt={`Foto de ${userProfiles[message.sender_id]?.name}`}
-                            className="message-profile-picture"
-                        />
-                        <div className="message-content">
-                            {message.content}
+        <div>
+            <div className="chat-container">
+                {error && <p className="error-message">{error}</p>}
+                <h2 className="chat-header">Tu conversación con {contactName}</h2>
+                <div className="message-list">
+                    {messages.map(message => (
+                        <div key={message.id} className={`message ${message.sender_id === parseInt(contactId) ? 'received' : 'sent'}`}>
+                            <img
+                                src={userProfiles[message.sender_id]?.profile_picture || 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg'}
+                                alt={`Foto de ${userProfiles[message.sender_id]?.name}`}
+                                className="message-profile-picture"
+                            />
+                            <span className="message-content">{message.content}</span>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
+                <div className="message-input">
+                    <input
+                        type="text"
+                        className="input-message"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Escribe un mensaje..."
+                    />
+                    <button className="send-button" onClick={handleSendMessage}>Enviar</button>
+                </div>
             </div>
-            <div className="message-input">
-                <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Escribe un mensaje..."
-                    className="input-message"
-                />
-                <button onClick={handleSendMessage} className="send-button">Enviar</button>
-            </div>
+            <button className="back-button" onClick={() => navigate('/conversations')}>Volver</button>
         </div>
     );
 };

@@ -36,8 +36,8 @@
   margin: 5px 0;
   border-radius: 10px;
   max-width: 100%;
-  display: flex;
-  align-items: center;
+  display: flex; /* Añadir flexbox */
+  align-items: center; /* Centrar verticalmente */
 }
 
 .message.sent {
@@ -78,11 +78,13 @@
   border-radius: 5px 0 0 5px;
   font-size: 1em;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input-message:focus {
   border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   outline: none;
 }
 
@@ -96,12 +98,38 @@
   font-size: 1em;
   font-family: "Concert One", sans-serif;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  transition: background 0.3s, transform 0.3s;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  margin-left: 10px; /* Espacio entre el input y el botón */
 }
 
 .send-button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón de volver */
+.back-button {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto 0; /* Ajustar los márgenes para centrar */
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  font-family: "Concert One", sans-serif;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Mensaje de error */

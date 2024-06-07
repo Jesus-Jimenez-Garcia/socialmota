@@ -43,25 +43,30 @@ const ProfileView = () => {
     }
 
     return (
-        <div className="profile-container">
-            <h2>Mi perfil</h2>
-            <div className="profile-info">
-                <img
-                    src={user.profile_picture || defaultProfilePicture}
-                    alt={`Foto de ${user.name}`}
-                    className="profile-picture"
-                    onError={(e) => e.target.src = defaultProfilePicture}
-                />
-                <h3>{user.name}</h3>
-                <p>{user.description}</p>
+        <div>
+            <div className="profile-container">
+                <h2>Mi perfil</h2>
+                <div className="profile-info">
+                    <div className="profile-picture-container">
+                        <img
+                            src={user.profile_picture || defaultProfilePicture}
+                            alt={`Foto de ${user.name}`}
+                            className="profile-picture"
+                            onError={(e) => e.target.src = defaultProfilePicture}
+                        />
+                    </div>
+                    <h3>{user.name}</h3>
+                    <p>{user.description}</p>
+                </div>
+                <div className="profile-buttons">
+                    <button onClick={() => navigate('/my-posts')}>Ver mis posts</button>
+                    <button onClick={() => navigate('/edit-profile')}>Editar perfil</button>
+                    <button onClick={() => navigate('/change-password')}>Cambiar Contraseña</button>
+                    <button onClick={() => navigate('/followed-users')}>Usuarios Seguidos</button>
+                    <button onClick={() => navigate('/conversations')}>Conversaciones</button>
+                </div>
             </div>
-            <div className="profile-buttons">
-                <button onClick={() => navigate('/my-posts')}>Ver mis posts</button>
-                <button onClick={() => navigate('/edit-profile')}>Editar perfil</button>
-                <button onClick={() => navigate('/change-password')}>Cambiar Contraseña</button>
-                <button onClick={() => navigate('/followed-users')}>Usuarios Seguidos</button>
-                <button onClick={() => navigate('/conversations')}>Conversaciones</button> {/* Nuevo botón */}
-            </div>
+            <button className="back-button" onClick={() => navigate('/posts')}>Volver</button>
         </div>
     );
 };
