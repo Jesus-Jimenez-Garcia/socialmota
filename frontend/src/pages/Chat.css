@@ -1,0 +1,113 @@
+/* Contenedor principal del chat */
+.chat-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Encabezado del chat */
+.chat-header {
+  font-size: 2em;
+  color: #333;
+  font-family: "Concert One", sans-serif;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Lista de mensajes */
+.message-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+/* Mensajes */
+.message {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.message.sent {
+  justify-content: flex-end;
+  color: #006400; /* Verde oscuro */
+}
+
+.message.received {
+  justify-content: flex-start;
+  color: #00008B; /* Azul oscuro */
+}
+
+/* Imagen de perfil del mensaje */
+.message img.message-profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 2px solid #ddd;
+}
+
+/* Contenido del mensaje */
+.message-content {
+  font-size: 1em;
+  color: inherit;
+}
+
+/* Entrada de mensaje */
+.message-input {
+  display: flex;
+  margin-top: 20px;
+}
+
+.input-message {
+  flex: 1;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
+  font-size: 1em;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.input-message:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.send-button {
+  padding: 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-size: 1em;
+  font-family: "Concert One", sans-serif;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Mensaje de error */
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}

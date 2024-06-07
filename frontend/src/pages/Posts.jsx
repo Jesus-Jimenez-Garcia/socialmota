@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Post from '../components/Post.jsx';
+import './Posts.css';
 
 const Posts = ({ filterByUser = false }) => {
   const [posts, setPosts] = useState([]);
   const [userName, setUserName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1); // Estado para la página actual
-  const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
-  const [sortByPopularity, setSortByPopularity] = useState(false); // Estado para manejar la ordenación por popularidad
-  const [showFollowed, setShowFollowed] = useState(false); // Estado para manejar la visualización de posts seguidos
-  const [showTopButton, setShowTopButton] = useState(false); // Estado para manejar la visibilidad del botón "Volver al inicio"
-  const [following, setFollowing] = useState([]); // Estado para manejar los seguidos del usuario
-  const [openCommentsPostId, setOpenCommentsPostId] = useState(null); // Estado para manejar el post con comentarios abiertos
+  const [page, setPage] = useState(1);
+  const [isLastPage, setIsLastPage] = useState(false);
+  const [sortByPopularity, setSortByPopularity] = useState(false);
+  const [showFollowed, setShowFollowed] = useState(false);
+  const [showTopButton, setShowTopButton] = useState(false);
+  const [following, setFollowing] = useState([]);
+  const [openCommentsPostId, setOpenCommentsPostId] = useState(null);
   const navigate = useNavigate();
 
   const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
@@ -21,7 +22,7 @@ const Posts = ({ filterByUser = false }) => {
       const token = localStorage.getItem('token');
       let endpoint = '';
       if (filterByUser) {
-        endpoint = 'user'; // Endpoint para obtener los posts del usuario autenticado
+        endpoint = 'user';
       } else if (showFollowed) {
         endpoint = sortByPopularity ? 'followed/likes' : 'followed';
       } else {
@@ -37,9 +38,9 @@ const Posts = ({ filterByUser = false }) => {
       if (response.ok) {
         const data = await response.json();
         if (data.length < 10) {
-          setIsLastPage(true); // Si hay menos de 10 posts, es la última página
+          setIsLastPage(true);
         } else {
-          setIsLastPage(false); // Si hay 10 posts, aún puede haber más páginas
+          setIsLastPage(false);
         }
         const formattedData = data.map(post => ({
           ...post,
@@ -105,7 +106,7 @@ const Posts = ({ filterByUser = false }) => {
     fetchPosts(page, sortByPopularity, showFollowed, filterByUser);
     fetchUserProfile();
     fetchFollowing();
-  }, [page, sortByPopularity, showFollowed, filterByUser]); // Agregar page, sortByPopularity, showFollowed y filterByUser como dependencias
+  }, [page, sortByPopularity, showFollowed, filterByUser]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,7 +117,7 @@ const Posts = ({ filterByUser = false }) => {
       }
     };
 
-    handleScroll(); // Ejecuta la función inicialmente para establecer el estado correcto
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [page]);
@@ -132,18 +133,18 @@ const Posts = ({ filterByUser = false }) => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
-    }); // Desplazamiento suave hacia la parte superior de la página
+    });
   };
 
   const handleSortByPopularity = () => {
     setSortByPopularity(prev => !prev);
-    setPage(1); // Reiniciar a la primera página
+    setPage(1);
   };
 
   const handleToggleFollowed = () => {
     setShowFollowed(prevState => !prevState);
     setSortByPopularity(false);
-    setPage(1); // Reiniciar a la primera página
+    setPage(1);
   };
 
   const handleNavigateToCreatePost = () => {
@@ -151,32 +152,31 @@ const Posts = ({ filterByUser = false }) => {
   };
 
   if (loading) {
-    return <p>Cargando posts...</p>;
+    return <p className="loading-message">Cargando posts...</p>;
   }
 
   if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
+    return <p className="error-message">{error}</p>;
   }
 
   return (
-    <div>
-      {!filterByUser && <h1>{userName}, te estábamos esperando</h1>}
-      {/* Botón para redirigir a la página de usuarios */}
-      <button onClick={() => navigate('/users')}>Conocer gente</button>
-      {/* Botón para alternar entre todos los posts y posts de usuarios seguidos */}
-      {!filterByUser && (
-        <>
-          <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
-          <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Más actuales' : 'Más populares'}</button>
-        </>
-      )}
-      {/* Botón para publicar */}
-      <button onClick={handleNavigateToCreatePost}>Publicar</button>
+    <div className="posts-container">
+      {!filterByUser && <h1 className="welcome-message">{userName}, te estábamos esperando</h1>}
+      <div className="posts-buttons">
+        <button onClick={() => navigate('/users')}>Conocer gente</button>
+        {!filterByUser && (
+          <>
+            <button onClick={handleToggleFollowed}>{showFollowed ? 'Todos' : 'Seguidos'}</button>
+            <button onClick={handleSortByPopularity}>{sortByPopularity ? 'Más actuales' : 'Más populares'}</button>
+          </>
+        )}
+        <button onClick={handleNavigateToCreatePost}>Publicar</button>
+      </div>
       {showFollowed && following.length === 0 && (
-        <h2>Aún no sigues a nadie. Comienza a conocer gente de tu pueblo.</h2>
+        <h2 className="no-following-message">Aún no sigues a nadie. Comienza a conocer gente de tu pueblo.</h2>
       )}
       {posts.length === 0 && filterByUser && (
-        <h2>Aún no has publicado en SocialMota. Tus vecinos te esperan</h2>
+        <h2 className="no-posts-message">Aún no has publicado en SocialMota. Tus vecinos te esperan</h2>
       )}
       {posts.map(post => (
         <Post 

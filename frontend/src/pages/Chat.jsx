@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './Chat.css';
 
 const Chat = () => {
     const { contactId } = useParams();
@@ -29,7 +30,6 @@ const Chat = () => {
                 const data = await response.json();
                 setMessages(data);
 
-                // Fetch the contact's name
                 const contactResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/${contactId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -41,7 +41,6 @@ const Chat = () => {
                 const contactData = await contactResponse.json();
                 setContactName(contactData.name);
 
-                // Fetch the user profiles (sender and receiver)
                 const userIds = [...new Set(data.map(msg => msg.sender_id))];
                 const profiles = {};
                 for (const id of userIds) {
@@ -95,9 +94,9 @@ const Chat = () => {
     };
 
     return (
-        <div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <h2>Tu conversación con {contactName}</h2>
+        <div className="chat-container">
+            {error && <p className="error-message">{error}</p>}
+            <h2 className="chat-header">Tu conversación con {contactName}</h2>
             <div className="message-list">
                 {messages.map(message => (
                     <div key={message.id} className={`message ${message.sender_id === parseInt(contactId) ? 'received' : 'sent'}`}>
@@ -106,7 +105,9 @@ const Chat = () => {
                             alt={`Foto de ${userProfiles[message.sender_id]?.name}`}
                             className="message-profile-picture"
                         />
-                        {message.content}
+                        <div className="message-content">
+                            {message.content}
+                        </div>
                     </div>
                 ))}
             </div>
@@ -116,8 +117,9 @@ const Chat = () => {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Escribe un mensaje..."
+                    className="input-message"
                 />
-                <button onClick={handleSendMessage}>Enviar</button>
+                <button onClick={handleSendMessage} className="send-button">Enviar</button>
             </div>
         </div>
     );
