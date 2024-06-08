@@ -106,7 +106,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
 
             if (response.ok) {
                 alert('Post borrado exitosamente');
-                window.location.reload(); // Recargar la página para reflejar los cambios
+                window.location.reload();
             } else {
                 const errorData = await response.json();
                 alert(errorData.mensaje || 'Error al borrar el post');
@@ -210,7 +210,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
                         {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
                         <p className="post-name"><strong>{name}</strong></p>
                     </div>
-                    <p>{content}</p>
+                    <p className="post-comment">{content}</p>
                     <div className="post-footer">
                         <p className="post-date"><small>Publicado {timeAgo}</small></p>
                         <div className="post-likes-comments">

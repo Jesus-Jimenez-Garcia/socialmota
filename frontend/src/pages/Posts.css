@@ -1,6 +1,6 @@
 /* Contenedor principal de posts */
 .posts-container {
-  max-width: 1000px;
+  max-width: 100em; /* Aumentar el ancho máximo */
   margin: 50px auto;
   padding: 20px;
   font-family: 'Montserrat', sans-serif;
