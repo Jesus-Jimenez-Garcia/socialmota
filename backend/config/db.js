@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config();
 
+// Crear la conexión a la base de datos utilizando las variables de entorno
 const connection = await mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
