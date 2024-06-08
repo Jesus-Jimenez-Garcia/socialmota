@@ -17,6 +17,7 @@ const Posts = ({ filterByUser = false }) => {
   const [openCommentsPostId, setOpenCommentsPostId] = useState(null);
   const navigate = useNavigate();
 
+  // Función para obtener los posts
   const fetchPosts = async (page, sortByPopularity = false, showFollowed = false, filterByUser = false) => {
     try {
       const token = localStorage.getItem('token');
@@ -58,6 +59,7 @@ const Posts = ({ filterByUser = false }) => {
     }
   };
 
+  // Función para obtener el perfil del usuario
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -80,6 +82,7 @@ const Posts = ({ filterByUser = false }) => {
     }
   };
 
+  // Función para obtener la lista de seguidos
   const fetchFollowing = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -122,12 +125,14 @@ const Posts = ({ filterByUser = false }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [page]);
 
+  // Función para manejar el cambio de página
   const handleNextPage = () => {
     if (!isLastPage) {
       setPage(prevPage => prevPage + 1);
     }
   };
 
+  // Función para volver a la primera página
   const handleFirstPage = () => {
     setPage(1);
     window.scrollTo({
@@ -136,17 +141,20 @@ const Posts = ({ filterByUser = false }) => {
     });
   };
 
+  // Función para ordenar por popularidad
   const handleSortByPopularity = () => {
     setSortByPopularity(prev => !prev);
     setPage(1);
   };
 
+  // Función para alternar entre ver todos los posts y solo los seguidos
   const handleToggleFollowed = () => {
     setShowFollowed(prevState => !prevState);
     setSortByPopularity(false);
     setPage(1);
   };
 
+  // Función para navegar a la página de crear un nuevo post
   const handleNavigateToCreatePost = () => {
     navigate('/create-post');
   };

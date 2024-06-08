@@ -17,7 +17,7 @@
 
 /* Espacio para que el contenido no quede detrás del navbar */
 .navbar-margin {
-  margin-top: 6em; /* Ajusta este valor según la altura de tu navbar */
+  margin-top: 6em;
 }
 
 /* Estilo para la marca de la navbar */
@@ -32,11 +32,11 @@
 
 .navbar-brand.inactive-link {
   pointer-events: none;
-  opacity: 1; /* No cambia la opacidad cuando está desactivado */
+  opacity: 1;
 }
 
 .navbar-brand:hover:not(.inactive-link) {
-  color: #ffcc00; /* Color diferente al pasar el mouse */
+  color: #ffcc00;
 }
 
 /* Contenedor de los enlaces de la navbar */
@@ -56,7 +56,6 @@
 
 .nav-link:hover {
   color: #ffcc00;
-  
 }
 
 /* Estilo para la imagen de perfil en la navbar */
@@ -78,12 +77,12 @@
   display: none;
   position: absolute;
   right: 10px;
-  top: 60px; /* Ajusta esto según sea necesario */
+  top: 60px;
   background-color: #007bff;
   border-radius: 10px;
   padding: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  z-index: 999; /* Asegura que el menú esté por encima de otros elementos */
+  z-index: 999;
 }
 
 .dropdown a,
@@ -104,6 +103,7 @@
   border-radius: 5px;
 }
 
+/* Contenedor de la imagen de perfil en la navbar */
 .nav-profile-picture-container {
   position: relative;
   display: none;

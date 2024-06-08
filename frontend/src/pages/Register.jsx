@@ -16,6 +16,7 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
 
     useEffect(() => {
         if (isEditMode) {
+            // Obtener el perfil del usuario si está en modo de edición
             const fetchUserProfile = async () => {
                 try {
                     const token = localStorage.getItem('token');
@@ -45,10 +46,12 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
         }
     }, [isEditMode]);
 
+    // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
+        // Validar la longitud de la contraseña
         if (!isEditMode && !isChangePasswordMode && password.length < 6) {
             setError('La contraseña debe tener al menos 6 caracteres');
             setLoading(false);
@@ -109,6 +112,7 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
         }
     };
 
+    // Manejar la eliminación de la cuenta
     const handleDeleteAccount = async () => {
         const confirmation = window.confirm('¿Estás seguro que quieres borrar tu cuenta?');
         if (!confirmation) {
@@ -137,6 +141,7 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
         }
     };
 
+    // Navegar de vuelta a la página del perfil
     const handleBack = () => {
         navigate('/profile');
     };

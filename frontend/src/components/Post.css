@@ -1,3 +1,4 @@
+/* Estilo principal para cada post */
 .post {
   border: 1px solid #000;
   padding: 15px;
@@ -12,11 +13,13 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+/* Contenedor del contenido del post */
 .post-content {
   display: flex;
   width: 100%;
 }
 
+/* Estilo para la imagen del post */
 .post-image {
   display: flex;
   align-items: center;
@@ -33,25 +36,27 @@
   object-fit: cover;
 }
 
+/* Contenedor del texto del post */
 .post-text {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-right: 4%;
- /* Asegúrate de que el comentario no esté en negrita */
 }
 
+/* Párrafos del post */
 .post p {
   margin: 0;
-  font-weight: normal; /* Asegúrate de que los párrafos no estén en negrita */
+  font-weight: normal;
 }
 
+/* Encabezado del post (nombre y foto) */
 .post-header {
   display: flex;
   align-items: center;
-  gap: 10px; /* Añadir un margen mínimo entre los elementos */
-  margin-bottom: 14px; 
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .post-header .profile-picture {
@@ -61,28 +66,30 @@
   margin-right: 10px;
 }
 
+/* Nombre del usuario */
 .post-name {
   font-size: 1.2em;
   font-weight: bold;
   font-family: "Concert One", sans-serif;
 }
 
+/* Comentario del post */
 .post-comment {
   font-weight: normal;
-
 }
 
+/* Fecha del post */
 .post-date {
   font-size: 0.8em;
   color: #888;
   font-weight: normal;
-  /* Asegúrate de que la fecha no esté en negrita */
 }
 
+/* Contenedor de likes y comentarios */
 .post-likes-comments {
   display: flex;
   align-items: center;
-  margin-top: 8px; 
+  margin-top: 8px;
 }
 
 .post-likes, .post-comments {
@@ -91,18 +98,21 @@
   margin-right: 15px;
 }
 
+/* Iconos de like y comentario */
 .heart-icon, .comment-icon {
   cursor: pointer;
   margin-right: 5px;
-  font-weight: normal; /* Asegúrate de que los íconos no estén en negrita */
+  font-weight: normal;
 }
 
+/* Sección de comentarios */
 .comments-section {
   margin-top: 10px;
   padding: 10px;
   border-top: 1px solid #9187fd;
 }
 
+/* Estilo para cada comentario */
 .comment {
   padding: 5px 0;
   border-bottom: 1px solid #9187fd;
@@ -114,9 +124,10 @@
 }
 
 .comment p {
-  font-weight: normal; /* Asegúrate de que los comentarios no estén en negrita */
+  font-weight: normal;
 }
 
+/* Botón para borrar comentario */
 .delete-comment-button {
   position: absolute;
   width: 7em;
@@ -134,6 +145,7 @@
   background-color: #c82333;
 }
 
+/* Formulario de comentario */
 .comment-form {
   display: flex;
   margin-top: 10px;
@@ -147,6 +159,7 @@
   margin-right: 10px;
 }
 
+/* Botón de enviar comentario */
 .comment-form button {
   padding: 10px 20px;
   border: none;

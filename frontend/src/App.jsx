@@ -1,4 +1,8 @@
-// src/App.jsx
+/**
+ * @author Jesús Jiménez García
+ */
+
+// Importación de módulos y componentes necesarios
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -10,14 +14,17 @@ import Nav from './components/Nav';
 import Chat from './pages/Chat';
 import CreatePost from './pages/CreatePost';
 import ProfileView from './pages/ProfileView';
-import Conversations from './pages/Conversations';  // Importar la nueva vista de conversaciones
+import Conversations from './pages/Conversations';
 
 const AppWrapper = () => {
     const location = useLocation();
+
+    // Determina si se debe ocultar la barra de navegación
     const hideNav = location.pathname === '/' || location.pathname === '/register' || location.pathname === '/login';
 
     return (
         <>
+            {/* Muestra la barra de navegación si hideNav es false */}
             {!hideNav && <Nav />}
             <Routes>
                 <Route path="/" element={<Home />} />
@@ -41,6 +48,7 @@ const AppWrapper = () => {
 const App = () => {
     return (
         <Router>
+            {/* Proveedor de contexto de autenticación */}
             <AuthProvider>
                 <AppWrapper />
             </AuthProvider>

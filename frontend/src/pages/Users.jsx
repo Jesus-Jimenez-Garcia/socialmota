@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
 import './Users.css';
-import { useNavigate } from 'react-router-dom'; // Añadir importación para el navigate
+import { useNavigate } from 'react-router-dom'; 
 
 const Users = ({ showFollowedOnly = false }) => {
     const [users, setUsers] = useState([]);
-    const [following, setFollowing] = useState([]); // Estado para los usuarios seguidos
+    const [following, setFollowing] = useState([]); 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
-    const [page, setPage] = useState(1); // Estado para la página actual
-    const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
-    const navigate = useNavigate(); // Inicializar navigate
+    const [page, setPage] = useState(1); 
+    const [isLastPage, setIsLastPage] = useState(false);
+    const navigate = useNavigate(); 
 
     const fetchUsers = async (page) => {
         try {

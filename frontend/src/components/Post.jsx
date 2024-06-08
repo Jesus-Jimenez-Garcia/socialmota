@@ -13,6 +13,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
     const [userId, setUserId] = useState(null);
     const showComments = openCommentsPostId === id;
 
+    // Verificar el estado del "me gusta" del usuario para el post actual
     useEffect(() => {
         const fetchLikeStatus = async () => {
             const token = localStorage.getItem('token');
@@ -40,6 +41,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         fetchLikeStatus();
     }, [id]);
 
+    // Obtener el perfil del usuario autenticado
     useEffect(() => {
         const fetchUserProfile = async () => {
             const token = localStorage.getItem('token');
@@ -60,6 +62,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         fetchUserProfile();
     }, []);
 
+    // Manejar clic en el botón de "me gusta"
     const handleLikeClick = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -89,6 +92,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
+    // Manejar clic en el botón de borrar post
     const handleDeleteClick = async () => {
         const confirmation = window.confirm('¿Seguro que quieres borrar el post?');
         if (!confirmation) {
@@ -117,6 +121,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
+    // Obtener los comentarios del post
     const fetchComments = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -140,6 +145,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
+    // Manejar el envío de un nuevo comentario
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -165,6 +171,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
+    // Manejar clic en el botón de comentarios para mostrar/ocultar
     const handleCommentsClick = () => {
         if (showComments) {
             setOpenCommentsPostId(null);
@@ -174,6 +181,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
+    // Manejar clic en el botón de borrar comentario
     const handleDeleteComment = async (commentId) => {
         const confirmation = window.confirm('¿Seguro que quieres borrar este comentario?');
         if (!confirmation) {

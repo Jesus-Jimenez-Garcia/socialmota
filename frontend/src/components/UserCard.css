@@ -1,10 +1,11 @@
-/* Estilos de los usuarios */
+/* Contenedor principal de usuarios */
 .user-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
+/* Tarjeta de usuario individual */
 .user-card {
   height: 25em; /* Aumentar un poco la altura para acomodar mejor los botones */
   width: 220px; /* Ancho fijo para cada tarjeta */
@@ -21,11 +22,13 @@
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
+/* Efecto al pasar el mouse sobre la tarjeta de usuario */
 .user-card:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+/* Imagen de perfil del usuario */
 .user-card img {
   width: 100%; /* Ajusta la imagen al ancho de la tarjeta */
   height: auto;
@@ -36,6 +39,7 @@
   object-position: top;
 }
 
+/* Nombre del usuario */
 .user-name {
   font-size: 1.5em;
   font-family: "Concert One", sans-serif;
@@ -43,6 +47,7 @@
   margin-bottom: 2px;
 }
 
+/* Descripción del usuario */
 .user-description {
   font-size: 1em;
   color: #666;
@@ -50,6 +55,7 @@
   text-align: center;
 }
 
+/* Botones en la tarjeta de usuario */
 .user-card button {
   padding: 10px;
   background-color: #007bff;
@@ -62,15 +68,18 @@
   transition: background 0.3s, color 0.3s, transform 0.3s;
 }
 
+/* Efecto al pasar el mouse sobre los botones */
 .user-card button:hover {
   background-color: #0056b3;
 }
 
+/* Botón de mensaje privado */
 .user-card .private-message-button {
   background-color: #28a745; /* Color diferente para el botón "Enviar Privado" */
   margin-top: 10px;
 }
 
+/* Efecto al pasar el mouse sobre el botón de mensaje privado */
 .user-card .private-message-button:hover {
   background-color: #218838;
 }

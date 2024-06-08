@@ -2,14 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './UserCard.css';
 
+// Componente UserCard
 const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatButton }) => {
+    // URL de imagen de perfil por defecto
     const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
     return (
         <div className="user-card">
             <img 
                 src={user.profile_picture || defaultProfilePicture} 
-                alt={`Foto de ${user.name}`} 
+                alt={`Foto de ${user.name.split(' ')[0]}`}
                 onError={(e) => e.target.src = defaultProfilePicture} 
             />
             <p className="user-name"><strong>{user.name}</strong></p>
@@ -32,6 +34,7 @@ const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatBut
     );
 };
 
+// Definir los tipos de las propiedades del componente UserCard
 UserCard.propTypes = {
     user: PropTypes.shape({
         id: PropTypes.number.isRequired,
@@ -42,7 +45,7 @@ UserCard.propTypes = {
     isFollowing: PropTypes.bool,
     onFollow: PropTypes.func,
     onUnfollow: PropTypes.func,
-    showChatButton: PropTypes.bool // Nueva propiedad
+    showChatButton: PropTypes.bool 
 };
 
 export default UserCard;
