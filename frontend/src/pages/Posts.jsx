@@ -161,7 +161,8 @@ const Posts = ({ filterByUser = false }) => {
 
   return (
     <div className="posts-container">
-      {!filterByUser && <h1 className="welcome-message">{userName}, te estábamos esperando</h1>}
+      {!filterByUser && <h1 className="welcome-message">Hola {userName.split(' ')[0]}</h1>}
+
       <div className="posts-buttons">
         <button onClick={() => navigate('/users')}>Conocer gente</button>
         {!filterByUser && (

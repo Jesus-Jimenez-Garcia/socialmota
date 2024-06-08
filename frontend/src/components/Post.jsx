@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import 'moment/locale/es';
 import './Post.css';
 
 const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) => {
@@ -203,67 +204,67 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
     const timeAgo = moment(created_at).fromNow();
 
     return (
-        <div className="post">
-            <div className="post-content">
-                <div className={`post-text ${image_url ? '' : 'full'}`}>
-                    <div className="post-header">
-                        {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
-                        <p className="post-name"><strong>{name}</strong></p>
-                    </div>
-                    <p className="post-comment">{content}</p>
-                    <div className="post-footer">
-                        <p className="post-date"><small>Publicado {timeAgo}</small></p>
-                        <div className="post-likes-comments">
-                            <div className="post-likes" onClick={handleLikeClick}>
-                                <span role="img" aria-label="like" className={`heart-icon ${liked ? 'liked' : ''}`}>
-                                    {liked ? '❤️' : '🤍'}
-                                </span>
-                                <span>{likeCount}</span>
-                            </div>
-                            <div className="post-comments" onClick={handleCommentsClick}>
-                                <span role="img" aria-label="comments" className="comment-icon">💬</span>
-                                <span>{comments}</span>
-                            </div>
-                        </div>
-                        {isUserPost && (
-                            <button type="button" className="delete-button" onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>
-                                Borrar
-                            </button>
-                        )}
-                    </div>
-                </div>
-                {image_url && (
-                    <div className="post-image">
-                        <img src={image_url} alt="Contenido del post" />
-                    </div>
-                )}
-            </div>
-            {showComments && (
-                <div className="comments-section">
-                    {commentList.map(comment => (
-                        <div key={comment.id} className="comment">
-                            <strong>{comment.username}</strong>
-                            <p>{comment.comment}</p>
-                            {comment.user_id === userId && (
-                                <button type="button" className="delete-comment-button" onClick={() => handleDeleteComment(comment.id)}>
-                                    Borrar comentario
-                                </button>
-                            )}
-                        </div>
-                    ))}
-                    <form className="comment-form" onSubmit={handleCommentSubmit}>
-                        <input
-                            type="text"
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            placeholder="Añadir un comentario..."
-                            required
-                        />
-                        <button type="submit">Comentar</button>
-                    </form>
-                </div>
-            )}
-        </div>
+      <div className="post">
+      <div className="post-content">
+          <div className={`post-text ${image_url ? '' : 'full'}`}>
+              <div className="post-header">
+                  {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
+                  <p className="post-name"><strong>{name}</strong></p>
+              </div>
+              <p className="post-comment">{content}</p>
+              <div className="post-footer">
+                  <p className="post-date"><small>Publicado {timeAgo}</small></p>
+                  <div className="post-likes-comments">
+                      <div className="post-likes" onClick={handleLikeClick}>
+                          <span role="img" aria-label="like" className={`heart-icon ${liked ? 'liked' : ''}`}>
+                              {liked ? '❤️' : '🤍'}
+                          </span>
+                          <span>{likeCount}</span>
+                      </div>
+                      <div className="post-comments" onClick={handleCommentsClick}>
+                          <span role="img" aria-label="comments" className="comment-icon">💬</span>
+                          <span>{comments}</span>
+                      </div>
+                  </div>
+                  {isUserPost && (
+                      <button type="button" className="delete-button" onClick={handleDeleteClick} style={{ marginLeft: '10px' }}>
+                          Borrar
+                      </button>
+                  )}
+              </div>
+          </div>
+          {image_url && (
+              <div className="post-image">
+                  <img src={image_url} alt="Contenido del post" />
+              </div>
+          )}
+      </div>
+      {showComments && (
+          <div className="comments-section">
+              {commentList.map(comment => (
+                  <div key={comment.id} className="comment">
+                      <strong>{comment.username}</strong>
+                      <p>{comment.comment}</p>
+                      {comment.user_id === userId && (
+                          <button type="button" className="delete-comment-button" onClick={() => handleDeleteComment(comment.id)}>
+                              Borrar comentario
+                          </button>
+                      )}
+                  </div>
+              ))}
+              <form className="comment-form" onSubmit={handleCommentSubmit}>
+                  <input
+                      type="text"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Añadir un comentario..."
+                      required
+                  />
+                  <button type="submit">Comentar</button>
+              </form>
+          </div>
+      )}
+  </div>
     );
 };
 

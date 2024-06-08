@@ -1,11 +1,13 @@
-// src/pages/Conversations.jsx
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
+import { useNavigate } from 'react-router-dom';
+import './Conversations.css';
 
 const Conversations = () => {
     const [conversations, setConversations] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchConversations = async () => {
@@ -36,15 +38,15 @@ const Conversations = () => {
     }, []);
 
     if (loading) {
-        return <p>Cargando conversaciones...</p>;
+        return <p className="loading-message">Cargando conversaciones...</p>;
     }
 
     if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
+        return <p className="error-message">{error}</p>;
     }
 
     return (
-        <div>
+        <div className="conversations-container">
             <h2>Conversaciones</h2>
             <div className="user-container">
                 {conversations.map(user => (
@@ -55,6 +57,9 @@ const Conversations = () => {
                     />
                 ))}
             </div>
+            <button className="back-button" onClick={() => navigate('/profile')}>
+                Volver
+            </button>
         </div>
     );
 };

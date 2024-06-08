@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
+import './Users.css';
+import { useNavigate } from 'react-router-dom'; // Añadir importación para el navigate
 
 const Users = ({ showFollowedOnly = false }) => {
     const [users, setUsers] = useState([]);
@@ -8,6 +10,7 @@ const Users = ({ showFollowedOnly = false }) => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1); // Estado para la página actual
     const [isLastPage, setIsLastPage] = useState(false); // Estado para manejar la última página
+    const navigate = useNavigate(); // Inicializar navigate
 
     const fetchUsers = async (page) => {
         try {
@@ -135,7 +138,10 @@ const Users = ({ showFollowedOnly = false }) => {
 
     const handleFirstPage = () => {
         setPage(1);
-        window.scrollTo(0, 0); // Volver al inicio de la página
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        }); // Volver al inicio de la página
     };
 
     if (loading) {
@@ -165,6 +171,11 @@ const Users = ({ showFollowedOnly = false }) => {
                     <button onClick={handleFirstPage}>Volver al inicio</button>
                     {!isLastPage && <button onClick={handleNextPage}>Ver más usuarios</button>}
                 </div>
+            )}
+            {showFollowedOnly && (
+                <button className="back-button" onClick={() => navigate('/profile')}>
+                    Volver
+                </button>
             )}
         </div>
     );

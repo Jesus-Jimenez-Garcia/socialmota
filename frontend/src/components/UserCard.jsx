@@ -1,4 +1,3 @@
-// src/components/UserCard.jsx
 import React from 'react';
 import PropTypes from 'prop-types';
 import './UserCard.css';
@@ -14,7 +13,7 @@ const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatBut
                 onError={(e) => e.target.src = defaultProfilePicture} 
             />
             <p className="user-name"><strong>{user.name}</strong></p>
-            <p>{user.description}</p>
+            <p className="user-description">{user.description}</p>
             {showChatButton ? (
                 <button onClick={() => window.location.href = `/chat/${user.id}`}>Chat</button>
             ) : (
@@ -23,7 +22,7 @@ const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatBut
                         {isFollowing ? 'Dejar de seguir' : 'Seguir'}
                     </button>
                     {isFollowing && (
-                        <button onClick={() => window.location.href = `/chat/${user.id}`} style={{ marginTop: '10px' }}>
+                        <button onClick={() => window.location.href = `/chat/${user.id}`} className="private-message-button">
                             Enviar privado
                         </button>
                     )}

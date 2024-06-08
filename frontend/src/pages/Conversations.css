@@ -1,0 +1,57 @@
+/* Contenedor principal de conversaciones */
+.conversations-container {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Título de conversaciones */
+.conversations-container h2 {
+  font-size: 3em;
+  color: #333;
+  font-family: "Concert One", sans-serif;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Contenedor de usuarios */
+.user-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Mensajes de error y carga */
+.error-message,
+.loading-message {
+  text-align: center;
+  font-size: 1.5em;
+  color: #e74c3c;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Botón de volver */
+.back-button {
+  display: block;
+  width: 80%;
+  max-width: 200px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Concert One", sans-serif;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}

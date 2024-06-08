@@ -1,15 +1,13 @@
-/* src/components/UserCard.css */
-
 /* Estilos de los usuarios */
 .user-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center /* Cambiado a space-around para espaciar las tarjetas */
+  justify-content: center;
 }
 
 .user-card {
-  height: 300px;
-  width: 200px; /* Ancho fijo para cada tarjeta */
+  height: 25em; /* Aumentar un poco la altura para acomodar mejor los botones */
+  width: 220px; /* Ancho fijo para cada tarjeta */
   border: 1px solid #000;
   padding: 10px;
   margin: 10px;
@@ -20,6 +18,12 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.user-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .user-card img {
@@ -33,18 +37,21 @@
 }
 
 .user-name {
+  font-size: 1.5em;
+  font-family: "Concert One", sans-serif;
   font-weight: bold;
   margin-bottom: 2px;
 }
 
-.user p {
-  margin: 2px 0;
+.user-description {
+  font-size: 1em;
+  color: #666;
+  margin-bottom: 10px;
   text-align: center;
 }
 
-.user button {
+.user-card button {
   padding: 10px;
-  margin-top: 10px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -52,16 +59,18 @@
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
 }
 
-.user button:hover {
+.user-card button:hover {
   background-color: #0056b3;
 }
 
-.user-card button:nth-child(5) {
+.user-card .private-message-button {
   background-color: #28a745; /* Color diferente para el botón "Enviar Privado" */
+  margin-top: 10px;
 }
 
-.user-card button:nth-child(5):hover {
+.user-card .private-message-button:hover {
   background-color: #218838;
 }
