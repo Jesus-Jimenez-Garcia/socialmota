@@ -36,6 +36,8 @@
   object-fit: cover;
 }
 
+
+
 /* Contenedor del texto del post */
 .post-text {
   flex: 1;
@@ -57,6 +59,12 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
+}
+
+.post-header img:hover {
+  
+    transform: scale(1.1);
+  
 }
 
 .post-header .profile-picture {

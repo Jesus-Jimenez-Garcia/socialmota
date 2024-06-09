@@ -1,5 +1,5 @@
-import db from '../config/db.js';
-import bcrypt from 'bcrypt';
+import db from "../config/db.js";
+import bcrypt from "bcrypt";
 
 // Obtener todos los usuarios con paginación
 export const getAllUsers = async (req, res) => {
@@ -24,12 +24,28 @@ export const getAllUsers = async (req, res) => {
 export const getUserProfile = async (req, res) => {
   const userId = req.user.userId; // ID del usuario autenticado
   try {
-    const query = 'SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?';
-    const [results] = await db.execute(query, [userId]); // Ejecutar la consulta para obtener el perfil del usuario
-    if (results.length === 0) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' }); // Responder con un mensaje de error si el usuario no existe
+    const userQuery =
+      "SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?";
+    const [userResults] = await db.execute(userQuery, [userId]); // Ejecutar la consulta para obtener el perfil del usuario
+    if (userResults.length === 0) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Responder con un mensaje de error si el usuario no existe
     }
-    res.status(200).json(results[0]); // Responder con el perfil del usuario
+
+    const followersQuery =
+      "SELECT COUNT(*) as followerCount FROM Followers WHERE followed_id = ?";
+    const [followersResults] = await db.execute(followersQuery, [userId]); // Obtener la cantidad de seguidores
+
+    const postsQuery =
+      "SELECT COUNT(*) as postCount FROM Posts WHERE user_id = ?";
+    const [postsResults] = await db.execute(postsQuery, [userId]); // Obtener la cantidad de posts
+
+    const userProfile = {
+      ...userResults[0],
+      followerCount: followersResults[0].followerCount, // Añadir la cantidad de seguidores
+      postCount: postsResults[0].postCount, // Añadir la cantidad de posts
+    };
+
+    res.status(200).json(userProfile); // Responder con el perfil del usuario y la cantidad de seguidores y posts
   } catch (err) {
     res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
   }
@@ -39,12 +55,28 @@ export const getUserProfile = async (req, res) => {
 export const getUserDetails = async (req, res) => {
   const userId = req.params.id; // ID del usuario específico a obtener
   try {
-    const query = 'SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?';
-    const [results] = await db.execute(query, [userId]); // Ejecutar la consulta para obtener los detalles del usuario
-    if (results.length === 0) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' }); // Responder con un mensaje de error si el usuario no existe
+    const userQuery =
+      "SELECT id, username, profile_picture, name, description FROM Users WHERE id = ?";
+    const [userResults] = await db.execute(userQuery, [userId]); // Ejecutar la consulta para obtener los detalles del usuario
+    if (userResults.length === 0) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Responder con un mensaje de error si el usuario no existe
     }
-    res.status(200).json(results[0]); // Responder con los detalles del usuario
+
+    const followersQuery =
+      "SELECT COUNT(*) as followerCount FROM Followers WHERE followed_id = ?";
+    const [followersResults] = await db.execute(followersQuery, [userId]); // Obtener la cantidad de seguidores
+
+    const postsQuery =
+      "SELECT COUNT(*) as postCount FROM Posts WHERE user_id = ?";
+    const [postsResults] = await db.execute(postsQuery, [userId]); // Obtener la cantidad de posts
+
+    const userProfile = {
+      ...userResults[0],
+      followerCount: followersResults[0].followerCount, // Añadir la cantidad de seguidores
+      postCount: postsResults[0].postCount, // Añadir la cantidad de posts
+    };
+
+    res.status(200).json(userProfile); // Responder con los detalles del usuario y la cantidad de seguidores y posts
   } catch (err) {
     res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
   }
@@ -56,25 +88,33 @@ export const changePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body; // Obtener la contraseña antigua y la nueva desde el cuerpo de la solicitud
 
   if (newPassword.length < 6) {
-    return res.status(400).json({ mensaje: 'La nueva contraseña debe tener al menos 6 caracteres' }); // Verificar que la nueva contraseña tiene al menos 6 caracteres
+    return res
+      .status(400)
+      .json({
+        mensaje: "La nueva contraseña debe tener al menos 6 caracteres",
+      }); // Verificar que la nueva contraseña tiene al menos 6 caracteres
   }
 
   try {
-    const [user] = await db.execute('SELECT * FROM Users WHERE id = ?', [userId]); // Obtener el usuario actual
+    const [user] = await db.execute("SELECT * FROM Users WHERE id = ?", [
+      userId,
+    ]); // Obtener el usuario actual
     if (user.length === 0) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' }); // Responder con un mensaje de error si el usuario no existe
+      return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Responder con un mensaje de error si el usuario no existe
     }
 
     const isMatch = await bcrypt.compare(oldPassword, user[0].password); // Verificar que la contraseña antigua coincide
     if (!isMatch) {
-      return res.status(400).json({ mensaje: 'Contraseña antigua no correcta' }); // Responder con un mensaje de error si la contraseña antigua no coincide
+      return res
+        .status(400)
+        .json({ mensaje: "Contraseña antigua no correcta" }); // Responder con un mensaje de error si la contraseña antigua no coincide
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10); // Hashear la nueva contraseña
-    const query = 'UPDATE Users SET password = ? WHERE id = ?';
+    const query = "UPDATE Users SET password = ? WHERE id = ?";
     await db.execute(query, [hashedPassword, userId]); // Ejecutar la consulta para actualizar la contraseña
 
-    res.status(200).json({ mensaje: 'Contraseña actualizada exitosamente' }); // Responder con un mensaje de éxito
+    res.status(200).json({ mensaje: "Contraseña actualizada exitosamente" }); // Responder con un mensaje de éxito
   } catch (err) {
     res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
   }
@@ -87,10 +127,12 @@ export const updateUser = async (req, res) => {
 
   try {
     // Obtener los valores actuales del usuario
-    const [currentUser] = await db.execute('SELECT * FROM Users WHERE id = ?', [userId]);
-    
+    const [currentUser] = await db.execute("SELECT * FROM Users WHERE id = ?", [
+      userId,
+    ]);
+
     if (currentUser.length === 0) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' }); // Responder con un mensaje de error si el usuario no existe
+      return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Responder con un mensaje de error si el usuario no existe
     }
 
     const existingUser = currentUser[0];
@@ -100,16 +142,26 @@ export const updateUser = async (req, res) => {
     const newProfilePicture = profile_picture || existingUser.profile_picture;
     const newName = name || existingUser.name;
     const newDescription = description || existingUser.description;
-    const newPassword = password ? await bcrypt.hash(password, 10) : existingUser.password;
+    const newPassword = password
+      ? await bcrypt.hash(password, 10)
+      : existingUser.password;
 
-    const query = 'UPDATE Users SET username = ?, password = ?, profile_picture = ?, name = ?, description = ? WHERE id = ?';
-    const [results] = await db.execute(query, [newUsername, newPassword, newProfilePicture, newName, newDescription, userId]);
+    const query =
+      "UPDATE Users SET username = ?, password = ?, profile_picture = ?, name = ?, description = ? WHERE id = ?";
+    const [results] = await db.execute(query, [
+      newUsername,
+      newPassword,
+      newProfilePicture,
+      newName,
+      newDescription,
+      userId,
+    ]);
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' }); // Responder con un mensaje de error si no se actualizó ningún usuario
+      return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Responder con un mensaje de error si no se actualizó ningún usuario
     }
-    
-    res.status(200).json({ mensaje: 'Usuario actualizado exitosamente' }); // Responder con un mensaje de éxito
+
+    res.status(200).json({ mensaje: "Usuario actualizado exitosamente" }); // Responder con un mensaje de éxito
   } catch (err) {
     res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
   }
@@ -119,12 +171,12 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   const userId = req.user.userId; // Obtener el ID del usuario autenticado
   try {
-    const query = 'DELETE FROM Users WHERE id = ?';
+    const query = "DELETE FROM Users WHERE id = ?";
     const [results] = await db.execute(query, [userId]); // Ejecutar la consulta para borrar el usuario
     if (results.affectedRows === 0) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' }); // Responder con un mensaje de error si el usuario no existe
+      return res.status(404).json({ mensaje: "Usuario no encontrado" }); // Responder con un mensaje de error si el usuario no existe
     }
-    res.status(200).json({ mensaje: 'Usuario borrado exitosamente' }); // Responder con un mensaje de éxito
+    res.status(200).json({ mensaje: "Usuario borrado exitosamente" }); // Responder con un mensaje de éxito
   } catch (err) {
     res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
   }

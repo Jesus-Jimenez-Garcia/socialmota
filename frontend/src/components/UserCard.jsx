@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import './UserCard.css';
 
 // Componente UserCard
-const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatButton }) => {
+const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatButton, isInConversations = false }) => {
     // URL de imagen de perfil por defecto
     const defaultProfilePicture = 'https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg';
 
     return (
-        <div className="user-card">
+        <div className={`user-card ${isInConversations ? 'user-card-chat' : ''}`}>
             <img 
                 src={user.profile_picture || defaultProfilePicture} 
                 alt={`Foto de ${user.name}`}
@@ -45,7 +45,8 @@ UserCard.propTypes = {
     isFollowing: PropTypes.bool,
     onFollow: PropTypes.func,
     onUnfollow: PropTypes.func,
-    showChatButton: PropTypes.bool 
+    showChatButton: PropTypes.bool,
+    isInConversations: PropTypes.bool, 
 };
 
 export default UserCard;

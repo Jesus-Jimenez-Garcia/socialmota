@@ -10,6 +10,7 @@ const Conversations = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // Función para obtener las conversaciones del usuario
         const fetchConversations = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -53,7 +54,8 @@ const Conversations = () => {
                     <UserCard 
                         key={user.id} 
                         user={user} 
-                        showChatButton={true} 
+                        showChatButton={true}
+                        isInConversations={true} // Pasar la nueva propiedad
                     />
                 ))}
             </div>

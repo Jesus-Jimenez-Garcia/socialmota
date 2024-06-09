@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/es';
 import './Post.css';
 
 const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) => {
-    const { id, name, content, image_url, created_at, profile_picture, likes, comments } = post;
+    const { id, user_id, name, content, image_url, created_at, profile_picture, likes, comments } = post; // Añadir user_id
     const [likeCount, setLikeCount] = useState(likes);
     const [liked, setLiked] = useState(false);
     const [commentList, setCommentList] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [userId, setUserId] = useState(null);
     const showComments = openCommentsPostId === id;
+    const navigate = useNavigate(); // Añadir hook useNavigate
 
-    // Verificar el estado del "me gusta" del usuario para el post actual
     useEffect(() => {
         const fetchLikeStatus = async () => {
             const token = localStorage.getItem('token');
@@ -41,7 +42,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         fetchLikeStatus();
     }, [id]);
 
-    // Obtener el perfil del usuario autenticado
     useEffect(() => {
         const fetchUserProfile = async () => {
             const token = localStorage.getItem('token');
@@ -62,7 +62,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         fetchUserProfile();
     }, []);
 
-    // Manejar clic en el botón de "me gusta"
     const handleLikeClick = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -92,7 +91,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
-    // Manejar clic en el botón de borrar post
     const handleDeleteClick = async () => {
         const confirmation = window.confirm('¿Seguro que quieres borrar el post?');
         if (!confirmation) {
@@ -121,7 +119,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
-    // Obtener los comentarios del post
     const fetchComments = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -145,7 +142,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
-    // Manejar el envío de un nuevo comentario
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -171,7 +167,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
-    // Manejar clic en el botón de comentarios para mostrar/ocultar
     const handleCommentsClick = () => {
         if (showComments) {
             setOpenCommentsPostId(null);
@@ -181,7 +176,6 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
         }
     };
 
-    // Manejar clic en el botón de borrar comentario
     const handleDeleteComment = async (commentId) => {
         const confirmation = window.confirm('¿Seguro que quieres borrar este comentario?');
         if (!confirmation) {
@@ -211,12 +205,24 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
 
     const timeAgo = moment(created_at).fromNow();
 
+    const handleProfileClick = () => {
+        navigate(`/profile/${user_id}`);
+    };
+
     return (
       <div className="post">
       <div className="post-content">
           <div className={`post-text ${image_url ? '' : 'full'}`}>
               <div className="post-header">
-                  {profile_picture && <img src={profile_picture} alt={`Foto de ${name}`} className="profile-picture" />}
+                  {profile_picture && (
+                      <img
+                          src={profile_picture}
+                          alt={`Foto de ${name}`}
+                          className="profile-picture"
+                          onClick={handleProfileClick} // Manejar clic en la imagen de perfil
+                          style={{ cursor: 'pointer' }}
+                      />
+                  )}
                   <p className="post-name"><strong>{name}</strong></p>
               </div>
               <p className="post-comment">{content}</p>
@@ -279,6 +285,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
 Post.propTypes = {
     post: PropTypes.shape({
         id: PropTypes.number.isRequired,
+        user_id: PropTypes.number.isRequired, // Añadir user_id a las PropTypes
         name: PropTypes.string.isRequired,
         content: PropTypes.string.isRequired,
         image_url: PropTypes.string,

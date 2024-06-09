@@ -168,7 +168,7 @@ const Posts = ({ filterByUser = false }) => {
   }
 
   return (
-    <div className="posts-container">
+    <main className="posts-container">
       {!filterByUser && <h1 className="welcome-message">Hola {userName.split(' ')[0]}</h1>}
 
       <div className="posts-buttons">
@@ -200,7 +200,7 @@ const Posts = ({ filterByUser = false }) => {
         {showTopButton && <button onClick={handleFirstPage}>Volver al inicio</button>}
         <button onClick={handleNextPage} disabled={isLastPage}>Ver más posts</button>
       </div>
-    </div>
+    </main>
   );
 };
 

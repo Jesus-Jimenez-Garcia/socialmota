@@ -8,7 +8,7 @@
 /* Tarjeta de usuario individual */
 .user-card {
   height: 29em; 
-  width: 220px; /* Ancho fijo para cada tarjeta */
+  width: 220px; 
   border: 1px solid #000;
   padding: 10px;
   margin: 10px;
@@ -20,6 +20,10 @@
   align-items: center;
   box-sizing: border-box;
   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.user-card-chat {
+  height: 18em;
 }
 
 /* Efecto al pasar el mouse sobre la tarjeta de usuario */
