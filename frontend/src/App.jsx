@@ -39,7 +39,7 @@ const AppWrapper = () => {
                 <Route path="/change-password" element={<Register isChangePasswordMode={true} />} />
                 <Route path="/chat/:contactId" element={<Chat />} />
                 <Route path="/followed-users" element={<Users showFollowedOnly={true} />} />
-                <Route path="/conversations" element={<Conversations />} /> {/* Nueva ruta */}
+                <Route path="/conversations" element={<Conversations />} /> 
             </Routes>
         </>
     );
