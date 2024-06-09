@@ -155,14 +155,14 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
                 {!isEditMode && !isChangePasswordMode && (
                     <>
                         <div className="form-group">
-                            <label className="form-label">Nombre de Usuario</label>
+                            <label className="form-label">Usuario</label>
                             <input
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                                 maxLength={40}
-                                placeholder="Nombre de Usuario"
+                                placeholder="Escribe aquí tu usuario"
                                 className="form-input"
                             />
                         </div>
@@ -173,7 +173,7 @@ const Register = ({ isEditMode = false, isLoginMode = false, isChangePasswordMod
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
-                                placeholder="Contraseña"
+                                placeholder="Escribe aquí tu contraseña"
                                 className="form-input"
                             />
                         </div>

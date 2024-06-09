@@ -42,6 +42,7 @@ const CreatePost = () => {
   };
 
   return (
+    <>
     <div className="create-post-container">
       <h2 className="create-post-title">Publicar Nuevo Post</h2>
       <form onSubmit={handleSubmit} className="create-post-form">
@@ -70,7 +71,12 @@ const CreatePost = () => {
           {loading ? "Cargando..." : "Publicar"}
         </button>
       </form>
+      
     </div>
+    <button className="back-button" onClick={() => navigate('/posts')}>
+    Volver
+  </button>
+  </>
   );
 };
 

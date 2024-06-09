@@ -251,7 +251,7 @@ const Post = ({ post, isUserPost, openCommentsPostId, setOpenCommentsPostId }) =
           <div className="comments-section">
               {commentList.map(comment => (
                   <div key={comment.id} className="comment">
-                      <strong>{comment.username}</strong>
+                      <strong>{comment.name}</strong>
                       <p>{comment.comment}</p>
                       {comment.user_id === userId && (
                           <button type="button" className="delete-comment-button" onClick={() => handleDeleteComment(comment.id)}>

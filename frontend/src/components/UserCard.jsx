@@ -11,7 +11,7 @@ const UserCard = ({ user, isFollowing = false, onFollow, onUnfollow, showChatBut
         <div className="user-card">
             <img 
                 src={user.profile_picture || defaultProfilePicture} 
-                alt={`Foto de ${user.name.split(' ')[0]}`}
+                alt={`Foto de ${user.name}`}
                 onError={(e) => e.target.src = defaultProfilePicture} 
             />
             <p className="user-name"><strong>{user.name}</strong></p>

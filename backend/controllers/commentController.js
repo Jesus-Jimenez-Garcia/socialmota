@@ -2,16 +2,17 @@ import db from '../config/db.js';
 
 // Obtener comentarios de un post
 export const getComments = async (req, res) => {
-    const postId = req.params.id; // Obtener el ID del post de los parámetros de la solicitud
-    try {
-        // Query para obtener los comentarios de un post, junto con los nombres de usuario
-        const query = 'SELECT Comments.*, Users.username FROM Comments JOIN Users ON Comments.user_id = Users.id WHERE post_id = ?';
-        const [results] = await db.execute(query, [postId]); // Ejecutar la query con el ID del post
-        res.status(200).json(results); // Enviar los resultados como respuesta
-    } catch (err) {
-        res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
-    }
+  const postId = req.params.id; // Obtener el ID del post de los parámetros de la solicitud
+  try {
+      // Query para obtener los comentarios de un post, junto con los nombres de usuario
+      const query = 'SELECT Comments.*, Users.name FROM Comments JOIN Users ON Comments.user_id = Users.id WHERE post_id = ?';
+      const [results] = await db.execute(query, [postId]); // Ejecutar la query con el ID del post
+      res.status(200).json(results); // Enviar los resultados como respuesta
+  } catch (err) {
+      res.status(500).json({ error: err.message }); // Manejar errores y responder con un mensaje de error
+  }
 };
+
 
 // Crear un nuevo comentario
 export const createComment = async (req, res) => {

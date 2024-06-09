@@ -68,15 +68,15 @@ const Nav = () => {
                 <div className="navbar-links">
                     {user && (
                         <>
+                        <Link to="/profile" className="nav-link">
                             <img
                                 src={user.profile_picture || defaultProfilePicture}
                                 alt={`Foto de ${user.name}`}
                                 className="nav-profile-picture"
+                                
                                 onError={(e) => e.target.src = defaultProfilePicture}
-                            />
-                            <Link to="/profile" className="nav-link">
-                                Mi perfil
-                            </Link>
+                            /></Link>
+                          
                             <Link onClick={logout} className="nav-link">
                                 Cerrar sesión
                             </Link>

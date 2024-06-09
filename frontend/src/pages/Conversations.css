@@ -1,6 +1,6 @@
 /* Contenedor principal de conversaciones */
 .conversations-container {
-  max-width: 1000px;
+  max-width: auto;
   margin: 50px auto;
   padding: 20px;
   font-family: 'Montserrat', sans-serif;

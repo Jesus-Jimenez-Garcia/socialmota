@@ -8,7 +8,7 @@ body {
 
 button {
   padding: 10px 20px;
-  margin: 4px 0;
+  margin: 6px 0;
   font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
@@ -20,10 +20,6 @@ button {
 
 button:hover {
   background-color: #0056b3;
-}
-
-h2 {
-  color: #333;
 }
 
 /* Estilos del botón "Borrar cuenta" */
